@@ -7,64 +7,33 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <main id="main-content">
-    <div class="page-hero">
-      <div class="container">
-        <div class="breadcrumb">
-          <a onclick="nav('index.html')">Главная</a>
-          <span class="breadcrumb-sep">›</span>
-          <span class="breadcrumb-current">Мои заказы</span>
-        </div>
-        <div class="flex-between">
-          <div>
-            <h1 class="page-hero-title">Мои заказы</h1>
-            <p class="page-hero-sub">Отслеживайте статус и историю ваших заказов</p>
-          </div>
-          <button class="btn btn-primary" onclick="nav('catalog.html')">+ Новый заказ</button>
-        </div>
-      </div>
-    </div>
-
-    <section class="section">
-      <div class="container">
-
-        <!-- TRACK FORM -->
-        <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:32px">
-          <h3 style="font-size:16px;font-weight:700;margin-bottom:12px">Отследить заказ по номеру</h3>
-          <div style="display:flex;gap:12px">
-            <input class="form-control" id="track-input" placeholder="Введите номер заказа (например: #3812)" style="max-width:360px">
-            <button class="btn btn-primary" onclick="trackOrder()">Отследить</button>
-          </div>
-          <div id="track-result" style="margin-top:16px;display:none"></div>
-        </div>
-
-        <!-- TABS -->
-        <div class="tabs" style="margin-bottom:24px">
-          <div class="tab active" onclick="filterOrders('all',this)">Все заказы</div>
-          <div class="tab" onclick="filterOrders('new',this)">Новые</div>
-          <div class="tab" onclick="filterOrders('processing',this)">В обработке</div>
-          <div class="tab" onclick="filterOrders('paid',this)">Оплачено</div>
-          <div class="tab" onclick="filterOrders('shipped',this)">Отправлено</div>
-          <div class="tab" onclick="filterOrders('done',this)">Выполнено</div>
-        </div>
-
-        <!-- ORDERS LIST -->
-        <div id="orders-list"></div>
-      </div>
-    </section>
-  </main>
+  <main id="main-content"></main>
 
   <script src="js/main.js"></script>
   <script src="js/header.js"></script>
   <script>
-    injectShell({ page: 'orders.html', title: 'Заказы' });
+    injectShell({ page: 'orders.html', title: t('footer.orders') });
+
+    const isUz = currentLang === 'uz';
+
+    const STATUS_LABELS = {
+      new:        isUz ? 'Yangi'       : 'Новый',
+      processing: isUz ? 'Jarayonda'   : 'В обработке',
+      paid:       isUz ? 'To\'langan'  : 'Оплачен',
+      shipped:    isUz ? 'Jo\'natildi' : 'Отправлено',
+      done:       isUz ? 'Bajarildi'   : 'Выполнен',
+    };
+
+    const STEPS = isUz
+      ? ['Qabul qilindi','To\'lov','Yig\'ish','Jo\'natildi','Yetkazildi']
+      : ['Принят','Оплата','Сборка','Отправлен','Доставлен'];
 
     const ORDERS = [
-      { id:'#3812', date:'2026-06-28', status:'paid', statusLabel:'Оплачен', items:[{id:1,qty:2},{id:3,qty:5}], total:455000, address:'г. Ташкент, ул. Мирзо Улугбека 44' },
-      { id:'#3811', date:'2026-06-25', status:'processing', statusLabel:'В обработке', items:[{id:2,qty:1}], total:420000, address:'г. Навои, ул. Промышленная 12' },
-      { id:'#3808', date:'2026-06-10', status:'shipped', statusLabel:'Отправлено', items:[{id:4,qty:3},{id:10,qty:1}], total:470000, address:'г. Самарканд, ул. Садовая 5' },
-      { id:'#3801', date:'2026-05-22', status:'done', statusLabel:'Выполнен', items:[{id:7,qty:2},{id:6,qty:8}], total:217800, address:'г. Ташкент, ул. Катартал 67' },
-      { id:'#3795', date:'2026-05-08', status:'done', statusLabel:'Выполнен', items:[{id:8,qty:1}], total:860000, address:'г. Ангрен, ул. Металлургов 3' },
+      { id:'#3812', date:'2026-06-28', status:'paid',       items:[{id:1,qty:2},{id:3,qty:5}], total:455000, address: isUz ? 'Toshkent sh., Mirzo Ulug\'bek ko\'ch. 44' : 'г. Ташкент, ул. Мирзо Улугбека 44' },
+      { id:'#3811', date:'2026-06-25', status:'processing', items:[{id:2,qty:1}],              total:420000, address: isUz ? 'Navoiy sh., Sanoat ko\'ch. 12'             : 'г. Навои, ул. Промышленная 12' },
+      { id:'#3808', date:'2026-06-10', status:'shipped',    items:[{id:4,qty:3},{id:10,qty:1}],total:470000, address: isUz ? 'Samarqand sh., Bog\'cha ko\'ch. 5'          : 'г. Самарканд, ул. Садовая 5' },
+      { id:'#3801', date:'2026-05-22', status:'done',       items:[{id:7,qty:2},{id:6,qty:8}], total:217800, address: isUz ? 'Toshkent sh., Katartal ko\'ch. 67'          : 'г. Ташкент, ул. Катартал 67' },
+      { id:'#3795', date:'2026-05-08', status:'done',       items:[{id:8,qty:1}],              total:860000, address: isUz ? 'Angren sh., Metallurglar ko\'ch. 3'         : 'г. Ангрен, ул. Металлургов 3' },
     ];
 
     const STATUS_COLORS = {
@@ -76,20 +45,86 @@
       shipped:'rgba(168,85,247,.15)', done:'rgba(100,116,139,.1)'
     };
 
+    const TAB_ALL        = isUz ? 'Barcha buyurtmalar' : 'Все заказы';
+    const TAB_NEW        = isUz ? 'Yangi'              : 'Новые';
+    const TAB_PROCESSING = isUz ? 'Jarayonda'          : 'В обработке';
+    const TAB_PAID       = isUz ? 'To\'langan'         : 'Оплачено';
+    const TAB_SHIPPED    = isUz ? 'Jo\'natildi'        : 'Отправлено';
+    const TAB_DONE       = isUz ? 'Bajarildi'          : 'Выполнено';
+    const LBL_ORDER_ITEMS= isUz ? 'Buyurtma tarkibi'   : 'Состав заказа';
+    const LBL_PIECES     = isUz ? 'dona.'              : 'шт.';
+    const LBL_ADDRESS    = isUz ? 'Yetkazib berish manzili:' : 'Адрес доставки:';
+    const LBL_INVOICE    = isUz ? '📄 Hisob-faktura'  : '📄 Счёт';
+    const LBL_CONTACT    = isUz ? '💬 Bog\'lanish'    : '💬 Связаться';
+    const LBL_REORDER    = isUz ? '🔄 Takror buyurtma': '🔄 Повторить заказ';
+    const LBL_POSITIONS  = isUz ? 'mahsulot'           : 'позиций';
+    const LBL_EMPTY      = isUz ? 'Buyurtmalar yo\'q'  : 'Заказов нет';
+    const LBL_EMPTY_SUB  = isUz ? 'Bu bo\'limda hozircha buyurtmalar yo\'q' : 'В этом разделе пока нет заказов';
+    const LBL_GO_CAT     = isUz ? 'Katalogga o\'tish'  : 'Перейти в каталог';
+    const LBL_TRACK_TITLE= isUz ? 'Buyurtma raqami bo\'yicha kuzatish' : 'Отследить заказ по номеру';
+    const LBL_TRACK_PH   = isUz ? 'Buyurtma raqamini kiriting (masalan: #3812)' : 'Введите номер заказа (например: #3812)';
+    const LBL_TRACK_BTN  = isUz ? 'Kuzatish'           : 'Отследить';
+    const LBL_FOUND      = isUz ? '✅ Buyurtma topildi:': '✅ Заказ найден:';
+    const LBL_STATUS     = isUz ? 'Holat:'             : 'Статус:';
+    const LBL_NOT_FOUND  = isUz ? 'Buyurtma topilmadi. Raqamni tekshiring yoki menejer bilan bog\'laning.' : 'Заказ не найден. Проверьте номер или свяжитесь с менеджером.';
+    const LBL_NEW_ORDER  = isUz ? '+ Yangi buyurtma'   : '+ Новый заказ';
+    const LBL_INVOICE_SENT = isUz ? 'Hisob-faktura emailga yuborildi' : 'Счёт на оплату отправлен на email';
+    const LBL_ADDED_CART = isUz ? 'Mahsulotlar savatga qo\'shildi' : 'Товары добавлены в корзину';
+
+    document.getElementById('main-content').innerHTML = `
+      <div class="page-hero">
+        <div class="container">
+          <div class="breadcrumb">
+            <a onclick="nav('index.html')">${t('nav.home')}</a>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-current">${isUz ? 'Mening buyurtmalarim' : 'Мои заказы'}</span>
+          </div>
+          <div class="flex-between">
+            <div>
+              <h1 class="page-hero-title">${isUz ? 'Mening buyurtmalarim' : 'Мои заказы'}</h1>
+              <p class="page-hero-sub">${isUz ? 'Buyurtmalaringiz holatini va tarixini kuzating' : 'Отслеживайте статус и историю ваших заказов'}</p>
+            </div>
+            <button class="btn btn-primary" onclick="nav('catalog.html')">${LBL_NEW_ORDER}</button>
+          </div>
+        </div>
+      </div>
+      <section class="section">
+        <div class="container">
+          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:32px">
+            <h3 style="font-size:16px;font-weight:700;margin-bottom:12px">${LBL_TRACK_TITLE}</h3>
+            <div style="display:flex;gap:12px">
+              <input class="form-control" id="track-input" placeholder="${LBL_TRACK_PH}" style="max-width:360px">
+              <button class="btn btn-primary" onclick="trackOrder()">${LBL_TRACK_BTN}</button>
+            </div>
+            <div id="track-result" style="margin-top:16px;display:none"></div>
+          </div>
+          <div class="tabs" style="margin-bottom:24px">
+            <div class="tab active" onclick="filterOrders('all',this)">${TAB_ALL}</div>
+            <div class="tab" onclick="filterOrders('new',this)">${TAB_NEW}</div>
+            <div class="tab" onclick="filterOrders('processing',this)">${TAB_PROCESSING}</div>
+            <div class="tab" onclick="filterOrders('paid',this)">${TAB_PAID}</div>
+            <div class="tab" onclick="filterOrders('shipped',this)">${TAB_SHIPPED}</div>
+            <div class="tab" onclick="filterOrders('done',this)">${TAB_DONE}</div>
+          </div>
+          <div id="orders-list"></div>
+        </div>
+      </section>
+    `;
+
     let activeFilter = 'all';
 
     function orderCard(o) {
+      const label = STATUS_LABELS[o.status] || o.status;
       const items = o.items.map(({id,qty}) => {
         const p = PRODUCTS.find(x=>x.id===id);
         return p ? `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
           <span style="font-size:22px">${p.emoji}</span>
           <span style="font-size:13px;flex:1">${p.name}</span>
-          <span style="font-size:12px;color:var(--text-2)">${qty} шт.</span>
-          <span style="font-size:13px;font-weight:600">${fmt(p.price*qty)} сум</span>
+          <span style="font-size:12px;color:var(--text-2)">${qty} ${LBL_PIECES}</span>
+          <span style="font-size:13px;font-weight:600">${fmt(p.price*qty)} ${t('currency')}</span>
         </div>` : '';
       }).join('');
 
-      const steps = ['Принят','Оплата','Сборка','Отправлен','Доставлен'];
       const stepIdx = {new:0,processing:1,paid:2,shipped:3,done:4}[o.status]??0;
 
       return `<div class="card" style="margin-bottom:16px;overflow:visible">
@@ -99,44 +134,39 @@
               <div style="font-size:16px;font-weight:700;font-family:monospace">${o.id}</div>
               <div style="font-size:12px;color:var(--text-3);margin-top:2px">${o.date}</div>
             </div>
-            <span style="padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;background:${STATUS_BG[o.status]};color:${STATUS_COLORS[o.status]}">${o.statusLabel}</span>
+            <span style="padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;background:${STATUS_BG[o.status]};color:${STATUS_COLORS[o.status]}">${label}</span>
           </div>
           <div style="text-align:right">
-            <div style="font-size:20px;font-weight:800">${fmt(o.total)} сум</div>
-            <div style="font-size:12px;color:var(--text-2)">${o.items.reduce((s,x)=>s+x.qty,0)} позиций</div>
+            <div style="font-size:20px;font-weight:800">${fmt(o.total)} ${t('currency')}</div>
+            <div style="font-size:12px;color:var(--text-2)">${o.items.reduce((s,x)=>s+x.qty,0)} ${LBL_POSITIONS}</div>
           </div>
         </div>
-
-        <!-- PROGRESS -->
         <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
           <div style="display:flex;align-items:center;gap:0">
-            ${steps.map((s,i)=>`
+            ${STEPS.map((s,i)=>`
               <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px">
                 <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
                   ${i<=stepIdx?`background:var(--primary);color:#fff;`:`background:var(--bg-3);color:var(--text-3);border:1px solid var(--border);`}">${i<=stepIdx?'✓':i+1}</div>
                 <div style="font-size:10px;color:${i<=stepIdx?'var(--text-2)':'var(--text-3)'};text-align:center;white-space:nowrap">${s}</div>
               </div>
-              ${i<steps.length-1?`<div style="flex:1;height:2px;margin-bottom:18px;background:${i<stepIdx?'var(--primary)':'var(--bg-3)'}"></div>`:''}`).join('')}
+              ${i<STEPS.length-1?`<div style="flex:1;height:2px;margin-bottom:18px;background:${i<stepIdx?'var(--primary)':'var(--bg-3)'}"></div>`:''}`).join('')}
           </div>
         </div>
-
-        <!-- ITEMS -->
         <details style="padding:0 20px">
           <summary style="padding:14px 0;cursor:pointer;font-size:14px;font-weight:600;color:var(--text-2);list-style:none;display:flex;align-items:center;justify-content:space-between">
-            Состав заказа <span style="font-size:12px">▼</span>
+            ${LBL_ORDER_ITEMS} <span style="font-size:12px">▼</span>
           </summary>
           <div style="padding-bottom:16px">
             ${items}
             <div style="display:flex;justify-content:space-between;padding-top:8px;font-size:14px;color:var(--text-2)">
-              <span>Адрес доставки:</span><span>${o.address}</span>
+              <span>${LBL_ADDRESS}</span><span>${o.address}</span>
             </div>
           </div>
         </details>
-
         <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px">
-          <button class="btn btn-outline btn-sm" onclick="toast('info','Счёт на оплату отправлен на email')">📄 Счёт</button>
-          <button class="btn btn-outline btn-sm" onclick="nav('contacts.html')">💬 Связаться</button>
-          ${o.status==='done'?`<button class="btn btn-outline btn-sm" onclick="reorder(${JSON.stringify(o.items).replace(/'/g,'')})">🔄 Повторить заказ</button>`:''}
+          <button class="btn btn-outline btn-sm" onclick="toast('info','${LBL_INVOICE_SENT}')">${LBL_INVOICE}</button>
+          <button class="btn btn-outline btn-sm" onclick="nav('contacts.html')">${LBL_CONTACT}</button>
+          ${o.status==='done'?`<button class="btn btn-outline btn-sm" onclick="reorder(${JSON.stringify(o.items).replace(/'/g,'')})"> ${LBL_REORDER}</button>`:''}
         </div>
       </div>`;
     }
@@ -152,7 +182,7 @@
       const list = ORDERS.filter(o => activeFilter === 'all' || o.status === activeFilter);
       const el = document.getElementById('orders-list');
       if (!list.length) {
-        el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📦</div><h3>Заказов нет</h3><p>В этом разделе пока нет заказов</p><button class="btn btn-primary mt-4" onclick="nav('catalog.html')">Перейти в каталог</button></div>`;
+        el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📦</div><h3>${LBL_EMPTY}</h3><p>${LBL_EMPTY_SUB}</p><button class="btn btn-primary mt-4" onclick="nav('catalog.html')">${LBL_GO_CAT}</button></div>`;
       } else {
         el.innerHTML = list.map(orderCard).join('');
       }
@@ -165,22 +195,22 @@
       res.style.display = 'block';
       if (o) {
         res.innerHTML = `<div style="padding:16px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:var(--r-sm)">
-          <div style="font-weight:700;margin-bottom:4px">✅ Заказ найден: ${o.id}</div>
-          <div style="font-size:14px;color:var(--text-2)">Статус: <strong style="color:var(--success)">${o.statusLabel}</strong></div>
+          <div style="font-weight:700;margin-bottom:4px">${LBL_FOUND} ${o.id}</div>
+          <div style="font-size:14px;color:var(--text-2)">${LBL_STATUS} <strong style="color:var(--success)">${STATUS_LABELS[o.status]}</strong></div>
         </div>`;
       } else {
-        res.innerHTML = `<div style="padding:16px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:var(--r-sm);font-size:14px">❌ Заказ с номером «${val}» не найден. Проверьте номер или свяжитесь с менеджером.</div>`;
+        res.innerHTML = `<div style="padding:16px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:var(--r-sm);font-size:14px">❌ ${LBL_NOT_FOUND}</div>`;
       }
     }
 
     function reorder(items) {
       items.forEach(({id,qty})=>{
-        for(let i=0;i<qty;i++) addToCart(id);
         const ex=state.cart.find(x=>x.id===id);
         if(ex){ex.qty=qty;saveCart();}
+        else state.cart.push({id,qty});
       });
-      renderCartBadge(); renderCart();
-      toast('success','Товары добавлены в корзину');
+      saveCart(); renderCartBadge(); renderCart();
+      toast('success', LBL_ADDED_CART);
       openCart();
     }
 

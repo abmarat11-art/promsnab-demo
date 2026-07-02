@@ -38,27 +38,7 @@
   </style>
 </head>
 <body>
-  <main id="main-content">
-    <section class="section" style="padding-top:40px">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-label">Фотоматериалы</div>
-          <h1 class="section-title">Фотогалерея</h1>
-          <p style="color:var(--text-2);margin-top:8px">Наш склад, оборудование, объекты и команда</p>
-        </div>
-
-        <div class="gallery-tabs">
-          <div class="gallery-tab active" onclick="filterGallery('all',this)">Все</div>
-          <div class="gallery-tab" onclick="filterGallery('warehouse',this)">Склад</div>
-          <div class="gallery-tab" onclick="filterGallery('equipment',this)">Оборудование</div>
-          <div class="gallery-tab" onclick="filterGallery('objects',this)">Объекты</div>
-          <div class="gallery-tab" onclick="filterGallery('team',this)">Команда</div>
-        </div>
-
-        <div class="gallery-grid" id="gallery-grid"></div>
-      </div>
-    </section>
-  </main>
+  <main id="main-content"></main>
 
   <div class="gallery-lightbox" id="lightbox" onclick="closeLightbox()">
     <div class="gallery-lightbox-close" onclick="closeLightbox()">✕</div>
@@ -71,29 +51,74 @@
   <script src="js/main.js"></script>
   <script src="js/header.js"></script>
   <script>
-    injectShell({ page: 'gallery.html', title: 'Фотогалерея' });
+    injectShell({ page: 'gallery.html', title: t('nav.gallery') });
 
-    const GALLERY = [
-      { emoji:'🏭', label:'Главный склад, корпус А', tag:'warehouse', wide:true },
-      { emoji:'💧', label:'Насосное оборудование Grundfos', tag:'equipment' },
-      { emoji:'🔧', label:'Компрессорный цех', tag:'equipment' },
-      { emoji:'📦', label:'Зона приёмки товаров', tag:'warehouse' },
-      { emoji:'⚡', label:'Электрооборудование Siemens', tag:'equipment', wide:true },
-      { emoji:'🏗️', label:'Объект: ТЭС Навои', tag:'objects' },
-      { emoji:'🤝', label:'Встреча с клиентом Atlas Copco', tag:'team' },
-      { emoji:'🔩', label:'Арматура DN200-500', tag:'equipment' },
-      { emoji:'🏢', label:'Офис и шоурум', tag:'objects', wide:true },
-      { emoji:'👷', label:'Монтажная бригада на объекте', tag:'team' },
-      { emoji:'🚚', label:'Собственный автопарк', tag:'warehouse' },
-      { emoji:'📊', label:'Сертификация Grundfos 2024', tag:'team' },
+    const isUz = currentLang === 'uz';
+    const G = {
+      label:     isUz ? 'Fotomateriallar'                       : 'Фотоматериалы',
+      title:     isUz ? 'Fotogalereya'                          : 'Фотогалерея',
+      sub:       isUz ? 'Bizning omborimiz, uskunalar, ob\'ektlar va jamoa' : 'Наш склад, оборудование, объекты и команда',
+      tabAll:    isUz ? 'Barchasi'                              : 'Все',
+      tabWare:   isUz ? 'Ombor'                                 : 'Склад',
+      tabEquip:  isUz ? 'Uskunalar'                             : 'Оборудование',
+      tabObj:    isUz ? 'Ob\'ektlar'                            : 'Объекты',
+      tabTeam:   isUz ? 'Jamoa'                                 : 'Команда',
+    };
+
+    const GALLERY = isUz ? [
+      { emoji:'🏭', label:'Asosiy ombor, A korpus',          tag:'warehouse', wide:true },
+      { emoji:'💧', label:'Grundfos nasos uskunalari',        tag:'equipment' },
+      { emoji:'🔧', label:'Kompressor sexi',                  tag:'equipment' },
+      { emoji:'📦', label:'Tovar qabul qilish zonasi',        tag:'warehouse' },
+      { emoji:'⚡', label:'Siemens elektr jihozlari',          tag:'equipment', wide:true },
+      { emoji:'🏗️', label:'Ob\'ekt: Navoiy IES',             tag:'objects' },
+      { emoji:'🤝', label:'Atlas Copco mijozi bilan uchrashuv',tag:'team' },
+      { emoji:'🔩', label:'Armatura DN200-500',               tag:'equipment' },
+      { emoji:'🏢', label:'Ofis va showroom',                 tag:'objects', wide:true },
+      { emoji:'👷', label:'Ob\'ektdagi montaj brigada',       tag:'team' },
+      { emoji:'🚚', label:'O\'z avtoparki',                   tag:'warehouse' },
+      { emoji:'📊', label:'Grundfos sertifikatsiyasi 2024',   tag:'team' },
+    ] : [
+      { emoji:'🏭', label:'Главный склад, корпус А',           tag:'warehouse', wide:true },
+      { emoji:'💧', label:'Насосное оборудование Grundfos',    tag:'equipment' },
+      { emoji:'🔧', label:'Компрессорный цех',                 tag:'equipment' },
+      { emoji:'📦', label:'Зона приёмки товаров',              tag:'warehouse' },
+      { emoji:'⚡', label:'Электрооборудование Siemens',       tag:'equipment', wide:true },
+      { emoji:'🏗️', label:'Объект: ТЭС Навои',               tag:'objects' },
+      { emoji:'🤝', label:'Встреча с клиентом Atlas Copco',    tag:'team' },
+      { emoji:'🔩', label:'Арматура DN200-500',                tag:'equipment' },
+      { emoji:'🏢', label:'Офис и шоурум',                     tag:'objects', wide:true },
+      { emoji:'👷', label:'Монтажная бригада на объекте',      tag:'team' },
+      { emoji:'🚚', label:'Собственный автопарк',              tag:'warehouse' },
+      { emoji:'📊', label:'Сертификация Grundfos 2024',        tag:'team' },
     ];
+
+    document.getElementById('main-content').innerHTML = `
+      <section class="section" style="padding-top:40px">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-label">${G.label}</div>
+            <h1 class="section-title">${G.title}</h1>
+            <p style="color:var(--text-2);margin-top:8px">${G.sub}</p>
+          </div>
+          <div class="gallery-tabs">
+            <div class="gallery-tab active" onclick="filterGallery('all',this)">${G.tabAll}</div>
+            <div class="gallery-tab" onclick="filterGallery('warehouse',this)">${G.tabWare}</div>
+            <div class="gallery-tab" onclick="filterGallery('equipment',this)">${G.tabEquip}</div>
+            <div class="gallery-tab" onclick="filterGallery('objects',this)">${G.tabObj}</div>
+            <div class="gallery-tab" onclick="filterGallery('team',this)">${G.tabTeam}</div>
+          </div>
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </div>
+      </section>
+    `;
 
     let currentFilter = 'all';
 
     function renderGallery(filter) {
       const items = filter === 'all' ? GALLERY : GALLERY.filter(g => g.tag === filter);
-      document.getElementById('gallery-grid').innerHTML = items.map((g,i) =>
-        `<div class="gallery-item${g.wide?' wide':''}" onclick="openLightbox('${g.emoji}','${g.label}')">
+      document.getElementById('gallery-grid').innerHTML = items.map(g =>
+        `<div class="gallery-item${g.wide?' wide':''}" onclick="openLightbox('${g.emoji}','${g.label.replace(/'/g,'&#39;')}')">
           ${g.emoji}
           <div class="gallery-item-label">${g.label}</div>
         </div>`

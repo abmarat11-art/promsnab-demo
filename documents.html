@@ -24,138 +24,103 @@
   </style>
 </head>
 <body>
-  <main id="main-content">
-    <section class="section" style="padding-top:40px">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-label">Юридические и технические</div>
-          <h1 class="section-title">Документы</h1>
-          <p style="color:var(--text-2);margin-top:8px">Сертификаты, договоры, технические паспорта и прайс-листы</p>
-        </div>
-
-        <div style="background:var(--bg-2);border:1px solid var(--border-hi);border-radius:var(--r-lg);padding:18px 24px;display:flex;align-items:center;gap:16px;margin-bottom:32px">
-          <div style="font-size:24px">ℹ️</div>
-          <div style="font-size:13px;color:var(--text-2)">Документы предоставлены в ознакомительных целях. Для получения оригиналов и нотариально заверенных копий обратитесь к менеджеру.</div>
-        </div>
-
-        <div class="doc-section-title">Сертификаты и лицензии</div>
-        <div class="doc-grid">
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">📜</div>
-            <div>
-              <div class="doc-tag cert">Сертификат</div>
-              <div class="doc-name">Дистрибьюторское соглашение Grundfos</div>
-              <div class="doc-meta">PDF · 1.2 МБ · Обновлён 01.01.2026</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">📜</div>
-            <div>
-              <div class="doc-tag cert">Сертификат</div>
-              <div class="doc-name">Дистрибьюторское соглашение Atlas Copco</div>
-              <div class="doc-meta">PDF · 980 КБ · Обновлён 01.03.2026</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">🏅</div>
-            <div>
-              <div class="doc-tag cert">Сертификат</div>
-              <div class="doc-name">ISO 9001:2015 — Система менеджмента качества</div>
-              <div class="doc-meta">PDF · 450 КБ · Действителен до 2027</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">📋</div>
-            <div>
-              <div class="doc-tag cert">Лицензия</div>
-              <div class="doc-name">Свидетельство о государственной регистрации</div>
-              <div class="doc-meta">PDF · 320 КБ</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">✅</div>
-            <div>
-              <div class="doc-tag cert">Авторизация</div>
-              <div class="doc-name">Авторизованный дилер Siemens Узбекистан</div>
-              <div class="doc-meta">PDF · 560 КБ · 2026</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">✅</div>
-            <div>
-              <div class="doc-tag cert">Авторизация</div>
-              <div class="doc-name">Авторизованный дилер ABB Узбекистан</div>
-              <div class="doc-meta">PDF · 490 КБ · 2026</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="doc-section-title">Юридические документы</div>
-        <div class="doc-grid">
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">📄</div>
-            <div>
-              <div class="doc-tag doc">Договор</div>
-              <div class="doc-name">Типовой договор поставки</div>
-              <div class="doc-meta">DOCX · 45 КБ</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">📄</div>
-            <div>
-              <div class="doc-tag doc">Договор</div>
-              <div class="doc-name">Договор на техническое обслуживание</div>
-              <div class="doc-meta">DOCX · 38 КБ</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">📊</div>
-            <div>
-              <div class="doc-tag doc">Реквизиты</div>
-              <div class="doc-name">Банковские реквизиты ООО PromSnab</div>
-              <div class="doc-meta">PDF · 120 КБ</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="doc-section-title">Прайс-листы и каталоги</div>
-        <div class="doc-grid">
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">💰</div>
-            <div>
-              <div class="doc-tag pdf">PDF</div>
-              <div class="doc-name">Прайс-лист насосное оборудование — июль 2026</div>
-              <div class="doc-meta">PDF · 1.8 МБ · Обновлён 01.07.2026</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">💰</div>
-            <div>
-              <div class="doc-tag pdf">PDF</div>
-              <div class="doc-name">Прайс-лист компрессорное оборудование</div>
-              <div class="doc-meta">PDF · 1.2 МБ · Обновлён 15.06.2026</div>
-            </div>
-          </div>
-          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
-            <div class="doc-icon">📚</div>
-            <div>
-              <div class="doc-tag pdf">PDF</div>
-              <div class="doc-name">Общий каталог оборудования 2026</div>
-              <div class="doc-meta">PDF · 8.4 МБ · Версия 3.2</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="text-align:center;margin-top:40px">
-          <p style="color:var(--text-2);margin-bottom:16px">Не нашли нужный документ?</p>
-          <button class="btn btn-primary" onclick="openCallback()">📞 Запросить документ</button>
-        </div>
-      </div>
-    </section>
-  </main>
+  <main id="main-content"></main>
 
   <script src="js/main.js"></script>
   <script src="js/header.js"></script>
-  <script>injectShell({ page: 'documents.html', title: 'Документы' });</script>
+  <script>
+    injectShell({ page: 'documents.html', title: t('footer.docs') });
+
+    const isUz = currentLang === 'uz';
+    const dc = (tag, icon, label, name, meta) =>
+      `<div class="doc-card" onclick="toast('info','${isUz ? 'Hujjat yuklanmoqda...' : 'Загрузка документа...'}')">
+        <div class="doc-icon">${icon}</div>
+        <div>
+          <div class="doc-tag ${tag}">${label}</div>
+          <div class="doc-name">${name}</div>
+          <div class="doc-meta">${meta}</div>
+        </div>
+      </div>`;
+
+    const T = {
+      pageLabel: isUz ? 'Yuridik va texnik'             : 'Юридические и технические',
+      pageTitle: isUz ? 'Hujjatlar'                      : 'Документы',
+      pageSub:   isUz ? 'Sertifikatlar, shartnomalar, texnik pasportlar va narxlar ro\'yxati' : 'Сертификаты, договоры, технические паспорта и прайс-листы',
+      infoTxt:   isUz ? 'Hujjatlar tanishish maqsadida taqdim etilgan. Asl nusxalar va notarial tasdiqlangan nusxalar uchun menejerga murojaat qiling.' : 'Документы предоставлены в ознакомительных целях. Для получения оригиналов и нотариально заверенных копий обратитесь к менеджеру.',
+      sec1:      isUz ? 'Sertifikatlar va litsenziyalar'  : 'Сертификаты и лицензии',
+      sec2:      isUz ? 'Yuridik hujjatlar'               : 'Юридические документы',
+      sec3:      isUz ? 'Narxlar ro\'yxati va kataloglar' : 'Прайс-листы и каталоги',
+      // cert labels
+      cert:      isUz ? 'Sertifikat'  : 'Сертификат',
+      license:   isUz ? 'Litsenziya'  : 'Лицензия',
+      auth:      isUz ? 'Vakolat'     : 'Авторизация',
+      contract:  isUz ? 'Shartnoma'   : 'Договор',
+      details:   isUz ? 'Rekvizitlar' : 'Реквизиты',
+      // doc names
+      d1:  isUz ? 'Grundfos distribyutorlik shartnomasi'                   : 'Дистрибьюторское соглашение Grundfos',
+      d2:  isUz ? 'Atlas Copco distribyutorlik shartnomasi'                : 'Дистрибьюторское соглашение Atlas Copco',
+      d3:  isUz ? 'ISO 9001:2015 — Sifat menejmenti tizimi'               : 'ISO 9001:2015 — Система менеджмента качества',
+      d4:  isUz ? 'Davlat ro\'yxatidan o\'tganlik guvohnomasi'            : 'Свидетельство о государственной регистрации',
+      d5:  isUz ? 'Siemens O\'zbekiston vakolatli dileri'                 : 'Авторизованный дилер Siemens Узбекистан',
+      d6:  isUz ? 'ABB O\'zbekiston vakolatli dileri'                     : 'Авторизованный дилер ABB Узбекистан',
+      d7:  isUz ? 'Standart yetkazib berish shartnomasi'                  : 'Типовой договор поставки',
+      d8:  isUz ? 'Texnik xizmat ko\'rsatish shartnomasi'                 : 'Договор на техническое обслуживание',
+      d9:  isUz ? 'PromSnab MChJ bank rekvizitlari'                       : 'Банковские реквизиты ООО PromSnab',
+      d10: isUz ? 'Nasos uskunalari narxlar ro\'yxati — iyul 2026'        : 'Прайс-лист насосное оборудование — июль 2026',
+      d11: isUz ? 'Kompressor uskunalari narxlar ro\'yxati'               : 'Прайс-лист компрессорное оборудование',
+      d12: isUz ? 'Umumiy uskunalar katalogi 2026'                        : 'Общий каталог оборудования 2026',
+      // bottom
+      notFound:  isUz ? 'Kerakli hujjatni topmadingizmi?' : 'Не нашли нужный документ?',
+      reqBtn:    isUz ? '📞 Hujjat so\'rash'              : '📞 Запросить документ',
+      upd:       isUz ? 'Yangilangan'                      : 'Обновлён',
+      valid:     isUz ? 'Amal qilish muddati'              : 'Действителен до',
+    };
+
+    document.getElementById('main-content').innerHTML = `
+      <section class="section" style="padding-top:40px">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-label">${T.pageLabel}</div>
+            <h1 class="section-title">${T.pageTitle}</h1>
+            <p style="color:var(--text-2);margin-top:8px">${T.pageSub}</p>
+          </div>
+
+          <div style="background:var(--bg-2);border:1px solid var(--border-hi);border-radius:var(--r-lg);padding:18px 24px;display:flex;align-items:center;gap:16px;margin-bottom:32px">
+            <div style="font-size:24px">ℹ️</div>
+            <div style="font-size:13px;color:var(--text-2)">${T.infoTxt}</div>
+          </div>
+
+          <div class="doc-section-title">${T.sec1}</div>
+          <div class="doc-grid">
+            ${dc('cert','📜',T.cert,T.d1,`PDF · 1.2 ${isUz?'MB':'МБ'} · ${T.upd} 01.01.2026`)}
+            ${dc('cert','📜',T.cert,T.d2,`PDF · 980 ${isUz?'KB':'КБ'} · ${T.upd} 01.03.2026`)}
+            ${dc('cert','🏅',T.cert,T.d3,`PDF · 450 ${isUz?'KB':'КБ'} · ${T.valid} 2027`)}
+            ${dc('cert','📋',T.license,T.d4,`PDF · 320 ${isUz?'KB':'КБ'}`)}
+            ${dc('cert','✅',T.auth,T.d5,`PDF · 560 ${isUz?'KB':'КБ'} · 2026`)}
+            ${dc('cert','✅',T.auth,T.d6,`PDF · 490 ${isUz?'KB':'КБ'} · 2026`)}
+          </div>
+
+          <div class="doc-section-title">${T.sec2}</div>
+          <div class="doc-grid">
+            ${dc('doc','📄',T.contract,T.d7,`DOCX · 45 ${isUz?'KB':'КБ'}`)}
+            ${dc('doc','📄',T.contract,T.d8,`DOCX · 38 ${isUz?'KB':'КБ'}`)}
+            ${dc('doc','📊',T.details,T.d9,`PDF · 120 ${isUz?'KB':'КБ'}`)}
+          </div>
+
+          <div class="doc-section-title">${T.sec3}</div>
+          <div class="doc-grid">
+            ${dc('pdf','💰','PDF',T.d10,`PDF · 1.8 ${isUz?'MB':'МБ'} · ${T.upd} 01.07.2026`)}
+            ${dc('pdf','💰','PDF',T.d11,`PDF · 1.2 ${isUz?'MB':'МБ'} · ${T.upd} 15.06.2026`)}
+            ${dc('pdf','📚','PDF',T.d12,`PDF · 8.4 ${isUz?'MB':'МБ'} · ${isUz?'Versiya':'Версия'} 3.2`)}
+          </div>
+
+          <div style="text-align:center;margin-top:40px">
+            <p style="color:var(--text-2);margin-bottom:16px">${T.notFound}</p>
+            <button class="btn btn-primary" onclick="openCallback()">${T.reqBtn}</button>
+          </div>
+        </div>
+      </section>
+    `;
+  </script>
 </body>
 </html>

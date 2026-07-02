@@ -7,115 +7,12 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <main id="main-content">
-    <div class="page-hero">
-      <div class="container">
-        <div class="breadcrumb">
-          <a onclick="nav('index.html')">Главная</a>
-          <span class="breadcrumb-sep">›</span>
-          <span class="breadcrumb-current" id="bc-current">Каталог</span>
-        </div>
-        <div class="flex-between">
-          <div>
-            <h1 class="page-hero-title" id="page-title">Каталог товаров</h1>
-            <p class="page-hero-sub" id="page-sub">Более 5200 позиций промышленного оборудования</p>
-          </div>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-outline btn-sm" onclick="nav('contacts.html')">📋 Запросить КП</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container" style="padding-top:32px;padding-bottom:64px">
-      <div class="catalog-layout">
-
-        <!-- SIDEBAR -->
-        <aside class="filter-sidebar">
-          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px">
-
-            <div class="filter-section">
-              <div class="filter-title">Раздел</div>
-              <div id="cat-filters">
-                <div class="filter-option">
-                  <input type="radio" name="cat" id="cat-all" value="" checked>
-                  <label for="cat-all">Все разделы</label>
-                  <span>635</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="filter-section">
-              <div class="filter-title">Бренд</div>
-              <div id="brand-filters">
-                <div class="filter-option"><input type="radio" name="brand" id="brand-all" value="" checked><label for="brand-all">Все бренды</label></div>
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="filter-section">
-              <div class="filter-title">Цена (сум)</div>
-              <div class="filter-range">
-                <input type="number" id="price-min" placeholder="От" min="0">
-                <input type="number" id="price-max" placeholder="До">
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="filter-section">
-              <div class="filter-title">Особое</div>
-              <div class="filter-option">
-                <input type="checkbox" id="f-sale" onchange="applyFilters()">
-                <label for="f-sale">Только акции</label>
-              </div>
-              <div class="filter-option">
-                <input type="checkbox" id="f-new" onchange="applyFilters()">
-                <label for="f-new">Новинки</label>
-              </div>
-              <div class="filter-option">
-                <input type="checkbox" id="f-hit" onchange="applyFilters()">
-                <label for="f-hit">Хиты продаж</label>
-              </div>
-            </div>
-
-            <button class="btn btn-outline w-full btn-sm" onclick="resetFilters()">Сбросить фильтры</button>
-          </div>
-        </aside>
-
-        <!-- MAIN -->
-        <div class="catalog-main">
-          <div class="sort-bar">
-            <span class="results-count" id="results-count">Загрузка...</span>
-            <select id="sort-select" onchange="applyFilters()">
-              <option value="default">По умолчанию</option>
-              <option value="price-asc">Цена: по возрастанию</option>
-              <option value="price-desc">Цена: по убыванию</option>
-              <option value="rating">По рейтингу</option>
-              <option value="name">По названию</option>
-            </select>
-          </div>
-
-          <div class="grid-3" id="products-grid"></div>
-
-          <div id="empty-state" class="empty-state hidden">
-            <div class="empty-state-icon">🔍</div>
-            <h3>Ничего не найдено</h3>
-            <p>Попробуйте изменить параметры фильтра</p>
-            <button class="btn btn-outline mt-4" onclick="resetFilters()">Сбросить фильтры</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+  <main id="main-content"></main>
 
   <script src="js/main.js"></script>
   <script src="js/header.js"></script>
   <script>
-    injectShell({ page: 'catalog.html', title: 'Каталог' });
+    injectShell({ page: 'catalog.html', title: t('nav.catalog') });
 
     const params = new URLSearchParams(location.search);
     let activeCat = params.get('cat') || '';
@@ -123,12 +20,117 @@
     let activeQ = params.get('q') || '';
     let activeBadge = params.get('badge') || '';
 
+    document.getElementById('main-content').innerHTML = `
+      <div class="page-hero">
+        <div class="container">
+          <div class="breadcrumb">
+            <a onclick="nav('index.html')">${t('nav.home')}</a>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-current" id="bc-current">${t('nav.catalog')}</span>
+          </div>
+          <div class="flex-between">
+            <div>
+              <h1 class="page-hero-title" id="page-title">${t('catalog.title')}</h1>
+              <p class="page-hero-sub" id="page-sub">${t('catalog.sub')}</p>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" onclick="nav('contacts.html')">${t('catalog.quote')}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container" style="padding-top:32px;padding-bottom:64px">
+        <div class="catalog-layout">
+
+          <!-- SIDEBAR -->
+          <aside class="filter-sidebar">
+            <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px">
+
+              <div class="filter-section">
+                <div class="filter-title">${t('filter.section')}</div>
+                <div id="cat-filters">
+                  <div class="filter-option">
+                    <input type="radio" name="cat" id="cat-all" value="" checked>
+                    <label for="cat-all">${t('filter.allCats')}</label>
+                    <span>635</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="filter-section">
+                <div class="filter-title">${t('filter.brand')}</div>
+                <div id="brand-filters">
+                  <div class="filter-option"><input type="radio" name="brand" id="brand-all" value="" checked><label for="brand-all">${t('filter.allBrands')}</label></div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="filter-section">
+                <div class="filter-title">${t('filter.price')}</div>
+                <div class="filter-range">
+                  <input type="number" id="price-min" placeholder="${t('filter.from')}" min="0">
+                  <input type="number" id="price-max" placeholder="${t('filter.to')}">
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="filter-section">
+                <div class="filter-title">${t('filter.special')}</div>
+                <div class="filter-option">
+                  <input type="checkbox" id="f-sale" onchange="applyFilters()">
+                  <label for="f-sale">${t('filter.onlySale')}</label>
+                </div>
+                <div class="filter-option">
+                  <input type="checkbox" id="f-new" onchange="applyFilters()">
+                  <label for="f-new">${t('filter.onlyNew')}</label>
+                </div>
+                <div class="filter-option">
+                  <input type="checkbox" id="f-hit" onchange="applyFilters()">
+                  <label for="f-hit">${t('filter.onlyHit')}</label>
+                </div>
+              </div>
+
+              <button class="btn btn-outline w-full btn-sm" onclick="resetFilters()">${t('filter.reset')}</button>
+            </div>
+          </aside>
+
+          <!-- MAIN -->
+          <div class="catalog-main">
+            <div class="sort-bar">
+              <span class="results-count" id="results-count">${t('catalog.loading')}</span>
+              <select id="sort-select" onchange="applyFilters()">
+                <option value="default">${t('sort.default')}</option>
+                <option value="price-asc">${t('sort.priceAsc')}</option>
+                <option value="price-desc">${t('sort.priceDesc')}</option>
+                <option value="rating">${t('sort.rating')}</option>
+                <option value="name">${t('sort.name')}</option>
+              </select>
+            </div>
+
+            <div class="grid-3" id="products-grid"></div>
+
+            <div id="empty-state" class="empty-state hidden">
+              <div class="empty-state-icon">🔍</div>
+              <h3>${t('catalog.notFound')}</h3>
+              <p>${t('catalog.notFoundSub')}</p>
+              <button class="btn btn-outline mt-4" onclick="resetFilters()">${t('filter.reset')}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
     // Build category radios
     const catFilters = document.getElementById('cat-filters');
     CATEGORIES.forEach(c => {
       catFilters.innerHTML += `<div class="filter-option">
         <input type="radio" name="cat" id="cat-${c.id}" value="${c.id}" ${activeCat===c.id?'checked':''} onchange="activeCat=this.value;applyFilters()">
-        <label for="cat-${c.id}">${c.emoji} ${c.name}</label>
+        <label for="cat-${c.id}">${c.emoji} ${catName(c)}</label>
         <span>${c.count}</span>
       </div>`;
     });
@@ -143,23 +145,22 @@
       </div>`;
     });
 
-    // Pre-fill special filters from URL
     if (activeBadge === 'sale') document.getElementById('f-sale').checked = true;
 
-    // Set page title based on filters
     if (activeQ) {
-      document.getElementById('page-title').textContent = `Поиск: "${activeQ}"`;
-      document.getElementById('bc-current').textContent = `Поиск: "${activeQ}"`;
+      const label = `${t('catalog.search')} "${activeQ}"`;
+      document.getElementById('page-title').textContent = label;
+      document.getElementById('bc-current').textContent = label;
     } else if (activeCat) {
       const c = CATEGORIES.find(x => x.id === activeCat);
       if (c) {
-        document.getElementById('page-title').textContent = c.name;
-        document.getElementById('bc-current').textContent = c.name;
+        document.getElementById('page-title').textContent = catName(c);
+        document.getElementById('bc-current').textContent = catName(c);
       }
     }
     if (activeBrand) {
-      if (document.getElementById(`brand-${activeBrand.replace(/\s/g,'')}`))
-        document.getElementById(`brand-${activeBrand.replace(/\s/g,'')}`).checked = true;
+      const el = document.getElementById(`brand-${activeBrand.replace(/\s/g,'')}`);
+      if (el) el.checked = true;
     }
 
     function applyFilters() {
@@ -195,7 +196,7 @@
       const empty = document.getElementById('empty-state');
       const count = document.getElementById('results-count');
 
-      count.textContent = `Найдено: ${results.length} товаров`;
+      count.textContent = `${t('catalog.found')} ${results.length} ${t('catalog.goods')}`;
 
       if (!results.length) {
         grid.innerHTML = '';

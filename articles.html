@@ -27,17 +27,7 @@
   </style>
 </head>
 <body>
-  <main id="main-content">
-    <section class="section" style="padding-top:40px">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-label">Полезные материалы</div>
-          <h1 class="section-title">Статьи и руководства</h1>
-        </div>
-        <div class="article-grid" id="articles-grid"></div>
-      </div>
-    </section>
-  </main>
+  <main id="main-content"></main>
 
   <div class="modal-overlay" id="article-modal" onclick="if(event.target===this)closeArticle()">
     <div class="modal-box" style="max-width:680px">
@@ -52,9 +42,48 @@
   <script src="js/main.js"></script>
   <script src="js/header.js"></script>
   <script>
-    injectShell({ page: 'articles.html', title: 'Статьи' });
+    injectShell({ page: 'articles.html', title: t('nav.articles') });
 
-    const ARTICLES = [
+    const isUz = currentLang === 'uz';
+
+    const ARTICLES = isUz ? [
+      {
+        emoji: '💧', tag: 'Nasoslar', date: '15 iyun 2026', views: 1240,
+        title: 'Suv ta\'minoti tizimi uchun markazdan qochma nasos qanday tanlanadi',
+        excerpt: 'Asosiy parametrlar: unumdorlik, bosim, zichlash turi. PromSnab muhandislaridan amaliy maslahatlar.',
+        content: `<h3>Tanlashning asosiy parametrlari</h3><p>Markazdan qochma nasos tanlashda uchta asosiy parametrni hisobga olish kerak: unumdorlik (m³/soat), bosim (suv ustuni metrlari) va quyiladigan muhit turi.</p><h3>Unumdorlik</h3><p>Unumdorlik tizimning ehtiyojlari bilan aniqlanadi. Turar-joy uchun: 4 kishilik oilaga 1.5–3 m³/soat. Sanoat ehtiyojlari uchun texnologik jarayon asosida hisoblanadi.</p><h3>Bosim</h3><p>Bosim quvur tizimining qarshiligi va ko'tarilish balandligini yengishi kerak. Formula: H = Hz + Hf, bu yerda Hz — geometrik balandlik, Hf — ishqalanish yo'qotishlari.</p><p>Parametrlaringiz bo'yicha uskunani aniq tanlash uchun PromSnab muhandislariga murojaat qiling.</p>`
+      },
+      {
+        emoji: '🔧', tag: 'Kompressorlar', date: '3 iyun 2026', views: 876,
+        title: 'Atlas Copco vintli kompressorlar: texnik xizmat ko\'rsatish',
+        excerpt: 'Yog\', filtrlar va sarflanadigan materiallarni almashtirish muddatlari. Nimani o\'zingiz qilish mumkin, nimaga servis kerak.',
+        content: `<h3>Reglament TO</h3><p>Birinchi TO 500 soat ishlagandan keyin, keyin har 2000 soatda yoki yiliga bir marta o'tkaziladi. TO doirasida moyli, havo va moy separatori almashtiriladi.</p><h3>Yog'ni almashtirish</h3><p>Faqat original Roto-Inject Fluid moyidan foydalaning. 4000 soat yoki 2 yildan keyin almashtiring. Talablar bajarilmasa kafolat bekor bo'ladi.</p><h3>Nimani o'zingiz qilish mumkin</h3><p>Har kuni yog' sathini tekshirish, vizual ko'rik, havo filtrini purkalash — korxona xodimlari tomonidan amalga oshiriladi. Sarflanadigan materiallarni almashtirish va servis — faqat vakolatli markaz tomonidan.</p>`
+      },
+      {
+        emoji: '⚡', tag: 'Elektr jihozlar', date: '22 may 2026', views: 654,
+        title: 'Chastota konvertorlari: elektr energiyasini 40% gacha tejash',
+        excerpt: 'Nasos va ventilyatorlarga VFD o\'rnatish 12–18 oyda o\'zini qoplashi va energiya sarfini kamaytirishi.',
+        content: `<h3>Ishlash printsipi</h3><p>Chastota konvertori (VFD) dvigatel tezligini yuklamaga qarab tartibga soladi. Tezlik 20% kamaytirilganda energiya sarfi 49% ga tushadi (kub bog'liqlik qonuni).</p><h3>Tipik o'zini qoplash muddati</h3><p>22 kVt quvvatli nasos qurilmasida, o'rtacha kunlik yuklanish 70%: tejash yiliga ~35 000 kVt·soat, ya'ni taxminan 5.6 mln so'm. ABB 22 kVt VFD narxi — 185 000 so'm. O'zini qoplash muddati — 12 oy.</p>`
+      },
+      {
+        emoji: '🔩', tag: 'Armatura', date: '10 may 2026', views: 432,
+        title: 'Zaglushkalar va sharli kranlar: quvur uchun nimani tanlash?',
+        excerpt: 'Bosim, harorat, ochish chastotasi va egalik narxi bo\'yicha to\'suvchi armatura turlarini solishtiramiz.',
+        content: `<h3>Zaglushkalar</h3><p>Kamdan-kam ulanishlarda (sutkada 2 martadan kam), yuqori bosimda (PN10–PN100) va katta diametrlar DN150–DN1000 da qo'llaniladi. Asosiy afzalligi — ochiq holatda minimal gidravlik qarshilik.</p><h3>Sharli kranlar</h3><p>Tez-tez ulanishlar, kichik va o'rta diametrlar DN15–DN150 uchun optimal. Tezkor yopish (90°), ixchamlik, A sinf germetikligi. Kamchiligi — tez yopishda gidrodarba.</p>`
+      },
+      {
+        emoji: '🛢️', tag: 'Moylash', date: '28 aprel 2026', views: 318,
+        title: 'Podshipniklar uchun plastik moyni to\'g\'ri tanlash',
+        excerpt: 'NLGI sinflari, harorat diapazonlari, quyuqlashtiruvchilar muvofiqligi. Erta eskirishga olib keladigan xatolar.',
+        content: `<h3>NLGI sinflari</h3><p>NLGI 0–1: markazlashtirilgan yetkazib berish tizimlari uchun suyuq moylar. NLGI 2: aksariyat podshipniklar uchun universal sinf. NLGI 3: vertikal podshipniklar va tebranishli tugunlar uchun quyuq moylar.</p><h3>Quyuqlashtiruvchilar muvofiqligi</h3><p>Litiy va kaltsiy moylarini aralashtirish mumkin emas — moy xususiyatisiz suyuq massa hosil bo'ladi. Moy turini o'zgartirishda podshipnikni to'liq yuvish kerak.</p>`
+      },
+      {
+        emoji: '⚙️', tag: 'Dastgohlar', date: '15 aprel 2026', views: 285,
+        title: '16K20 tokarlik dastgohi: sozlash va foydalanish',
+        excerpt: 'Markazlarni o\'rnatish, kesish rejimlarini tanlash va yo\'naltiruvchilarni parvarishlash bo\'yicha bosqichma-bosqich qo\'llanma.',
+        content: `<h3>Markazlarni sozlash</h3><p>Old va orqa markazlar o'qlari mosligini indikator bilan tekshiriladi. Ruxsat — 300 mm uzunlikda 0.01 mm dan ko'p emas. Sozlash — orqa boshning pinolini siljitish orqali.</p><h3>Kesish rejimlarini tanlash</h3><p>45-po'lat uchun: kesish tezligi 80–120 m/min, surish 0.1–0.3 mm/rev, qo'pol ishlovda chuqurlik 1–3 mm. Asbob chidamliligini oshirish uchun SOZh dan foydalaning.</p>`
+      },
+    ] : [
       {
         emoji: '💧', tag: 'Насосы', date: '15 июня 2026', views: 1240,
         title: 'Как выбрать центробежный насос для системы водоснабжения',
@@ -92,6 +121,18 @@
         content: `<h3>Настройка центров</h3><p>Совпадение осей переднего и заднего центров проверяется индикатором. Допуск — не более 0.01 мм на длине 300 мм. Регулировка — смещением пиноли задней бабки.</p><h3>Выбор режимов резания</h3><p>Для стали 45: скорость резания 80–120 м/мин, подача 0.1–0.3 мм/об, глубина 1–3 мм при черновой обработке. Используйте СОЖ для увеличения стойкости инструмента.</p>`
       },
     ];
+
+    document.getElementById('main-content').innerHTML = `
+      <section class="section" style="padding-top:40px">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-label">${isUz ? 'Foydali materiallar' : 'Полезные материалы'}</div>
+            <h1 class="section-title">${isUz ? 'Maqolalar va qo\'llanmalar' : 'Статьи и руководства'}</h1>
+          </div>
+          <div class="article-grid" id="articles-grid"></div>
+        </div>
+      </section>
+    `;
 
     function openArticle(i) {
       const a = ARTICLES[i];

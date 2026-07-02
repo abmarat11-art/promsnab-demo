@@ -72,8 +72,8 @@
               <div class="filter-section">
                 <div class="filter-title">${t('filter.price')}</div>
                 <div class="filter-range">
-                  <input type="number" id="price-min" placeholder="${t('filter.from')}" min="0">
-                  <input type="number" id="price-max" placeholder="${t('filter.to')}">
+                  <input type="number" id="price-min" placeholder="${t('filter.from')}" min="0" oninput="applyFilters()">
+                  <input type="number" id="price-max" placeholder="${t('filter.to')}" oninput="applyFilters()">
                 </div>
               </div>
 

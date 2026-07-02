@@ -3,204 +3,231 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PromSnab — Промышленное оборудование</title>
+  <title>PromSnab</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <main id="main-content">
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-grid"></div>
-      <div class="container">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
-          <div class="hero-content">
-            <div class="hero-eyebrow">
-              <span class="hero-eyebrow-dot"></span>
-              Официальный дистрибьютор в Узбекистане
-            </div>
-            <h1 class="hero-title">
-              Промышленное<br><span>оборудование</span><br>под любую задачу
-            </h1>
-            <p class="hero-sub">Насосы, компрессоры, арматура, электрооборудование. Более 5000 позиций в наличии. Доставка по всему Узбекистану.</p>
-            <div class="hero-btns">
-              <button class="btn btn-primary btn-lg" onclick="event.preventDefault(); nav('catalog.html'); return false;">Открыть каталог →</button>
-              <button class="btn btn-outline btn-lg" onclick="event.preventDefault(); nav('contacts.html'); return false;">Получить КП</button>
-            </div>
-            <div class="hero-stats">
-              <div><div class="hero-stat-num">5 200+</div><div class="hero-stat-label">Позиций в наличии</div></div>
-              <div><div class="hero-stat-num">16 лет</div><div class="hero-stat-label">На рынке</div></div>
-              <div><div class="hero-stat-num">3 400+</div><div class="hero-stat-label">Клиентов</div></div>
-            </div>
-          </div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-            <div onclick="nav('catalog.html?cat=pumps')" class="cat-card">
-              <div class="cat-icon" style="background:rgba(59,130,246,.15)">💧</div>
-              <div class="cat-name">Насосы</div>
-              <div class="cat-count">48 позиций</div>
-              <div class="cat-arrow">→</div>
-            </div>
-            <div onclick="nav('catalog.html?cat=compressors')" class="cat-card">
-              <div class="cat-icon" style="background:rgba(139,92,246,.15)">🔧</div>
-              <div class="cat-name">Компрессоры</div>
-              <div class="cat-count">32 позиции</div>
-              <div class="cat-arrow">→</div>
-            </div>
-            <div onclick="nav('catalog.html?cat=electric')" class="cat-card">
-              <div class="cat-icon" style="background:rgba(245,158,11,.15)">⚡</div>
-              <div class="cat-name">Электро</div>
-              <div class="cat-count">89 позиций</div>
-              <div class="cat-arrow">→</div>
-            </div>
-            <div onclick="nav('catalog.html?cat=valves')" class="cat-card">
-              <div class="cat-icon" style="background:rgba(236,72,153,.15)">🔩</div>
-              <div class="cat-name">Арматура</div>
-              <div class="cat-count">127 позиций</div>
-              <div class="cat-arrow">→</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BRANDS BAR -->
-    <section style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0">
-      <div class="container">
-        <div style="display:flex;align-items:center;gap:40px;overflow-x:auto;padding-bottom:2px">
-          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);white-space:nowrap;flex-shrink:0">Официальный дистрибьютор</span>
-          <span onclick="nav('catalog.html?brand=Grundfos')" style="font-size:15px;font-weight:700;color:var(--text-3);white-space:nowrap;cursor:pointer;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">Grundfos</span>
-          <span onclick="nav('catalog.html?brand=Atlas+Copco')" style="font-size:15px;font-weight:700;color:var(--text-3);white-space:nowrap;cursor:pointer;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">Atlas Copco</span>
-          <span onclick="nav('catalog.html?brand=Siemens')" style="font-size:15px;font-weight:700;color:var(--text-3);white-space:nowrap;cursor:pointer;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">Siemens</span>
-          <span onclick="nav('catalog.html?brand=ABB')" style="font-size:15px;font-weight:700;color:var(--text-3);white-space:nowrap;cursor:pointer;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">ABB</span>
-          <span onclick="nav('catalog.html?brand=Danfoss')" style="font-size:15px;font-weight:700;color:var(--text-3);white-space:nowrap;cursor:pointer;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">Danfoss</span>
-          <span onclick="nav('catalog.html?brand=Tyco')" style="font-size:15px;font-weight:700;color:var(--text-3);white-space:nowrap;cursor:pointer;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">Tyco</span>
-          <span onclick="nav('catalog.html?brand=Mobil')" style="font-size:15px;font-weight:700;color:var(--text-3);white-space:nowrap;cursor:pointer;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">Mobil</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- CATEGORIES -->
-    <section class="section">
-      <div class="container">
-        <div class="flex-between section-header">
-          <div>
-            <div class="section-label">Разделы</div>
-            <h2 class="section-title">Каталог оборудования</h2>
-          </div>
-          <button class="btn btn-outline" onclick="nav('catalog.html')">Весь каталог →</button>
-        </div>
-        <div class="grid-4" id="categories-grid"></div>
-      </div>
-    </section>
-
-    <!-- PROMO BANNER -->
-    <section class="section-sm">
-      <div class="container">
-        <div class="promo-banner">
-          <div>
-            <div class="promo-banner-title">🔥 Горячие предложения июля</div>
-            <div class="promo-banner-sub">Скидки до 25% на насосное и компрессорное оборудование</div>
-          </div>
-          <button class="btn btn-lg" style="background:#fff;color:#1a1a2e;font-weight:700;flex-shrink:0" onclick="nav('catalog.html?badge=sale')">Смотреть акции</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- FEATURED PRODUCTS -->
-    <section class="section">
-      <div class="container">
-        <div class="flex-between section-header">
-          <div>
-            <div class="section-label">Хиты продаж</div>
-            <h2 class="section-title">Популярные товары</h2>
-          </div>
-          <button class="btn btn-outline" onclick="nav('catalog.html')">Все товары →</button>
-        </div>
-        <div class="grid-4" id="products-grid"></div>
-      </div>
-    </section>
-
-    <!-- HOW TO ORDER -->
-    <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-      <div class="container">
-        <div class="section-header" style="text-align:center">
-          <div class="section-label">Просто</div>
-          <h2 class="section-title">Как сделать заказ</h2>
-        </div>
-        <div class="grid-4">
-          <div style="text-align:center;padding:24px 16px">
-            <div style="width:56px;height:56px;border-radius:50%;background:var(--primary-g);border:2px solid rgba(79,142,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px">🔍</div>
-            <div style="font-size:11px;font-weight:800;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">ШАГ 1</div>
-            <div style="font-size:16px;font-weight:700;margin-bottom:8px">Выберите товар</div>
-            <div style="font-size:13px;color:var(--text-2);line-height:1.6">Найдите нужную позицию в каталоге или свяжитесь с менеджером</div>
-          </div>
-          <div style="text-align:center;padding:24px 16px">
-            <div style="width:56px;height:56px;border-radius:50%;background:var(--primary-g);border:2px solid rgba(79,142,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px">🛒</div>
-            <div style="font-size:11px;font-weight:800;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">ШАГ 2</div>
-            <div style="font-size:16px;font-weight:700;margin-bottom:8px">Добавьте в корзину</div>
-            <div style="font-size:13px;color:var(--text-2);line-height:1.6">Укажите количество и оформите заказ онлайн за 2 минуты</div>
-          </div>
-          <div style="text-align:center;padding:24px 16px">
-            <div style="width:56px;height:56px;border-radius:50%;background:var(--primary-g);border:2px solid rgba(79,142,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px">📞</div>
-            <div style="font-size:11px;font-weight:800;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">ШАГ 3</div>
-            <div style="font-size:16px;font-weight:700;margin-bottom:8px">Подтверждение</div>
-            <div style="font-size:13px;color:var(--text-2);line-height:1.6">Наш менеджер свяжется с вами и уточнит детали доставки</div>
-          </div>
-          <div style="text-align:center;padding:24px 16px">
-            <div style="width:56px;height:56px;border-radius:50%;background:var(--primary-g);border:2px solid rgba(79,142,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px">🚚</div>
-            <div style="font-size:11px;font-weight:800;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">ШАГ 4</div>
-            <div style="font-size:16px;font-weight:700;margin-bottom:8px">Получите заказ</div>
-            <div style="font-size:13px;color:var(--text-2);line-height:1.6">Доставим по Ташкенту за 1 день, по Узбекистану за 2–5 дней</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ADVANTAGES -->
-    <section class="section">
-      <div class="container">
-        <div class="section-header" style="text-align:center">
-          <div class="section-label">Почему мы</div>
-          <h2 class="section-title">Наши преимущества</h2>
-        </div>
-        <div class="grid-3">
-          <div class="card card-body"><div style="font-size:32px;margin-bottom:12px">⚡</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Быстрая отгрузка</div><div style="font-size:14px;color:var(--text-2);line-height:1.6">80% товаров в наличии на складе в Ташкенте. Отгрузка в день заказа.</div></div>
-          <div class="card card-body"><div style="font-size:32px;margin-bottom:12px">📜</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Гарантия оригинала</div><div style="font-size:14px;color:var(--text-2);line-height:1.6">Все товары имеют сертификаты соответствия и официальную гарантию производителя.</div></div>
-          <div class="card card-body"><div style="font-size:32px;margin-bottom:12px">🛡️</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Гарантийный сервис</div><div style="font-size:14px;color:var(--text-2);line-height:1.6">Собственный сервисный центр. Ремонт и обслуживание оборудования.</div></div>
-          <div class="card card-body"><div style="font-size:32px;margin-bottom:12px">💰</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Конкурентные цены</div><div style="font-size:14px;color:var(--text-2);line-height:1.6">Прямые поставки от производителей без наценки посредников.</div></div>
-          <div class="card card-body"><div style="font-size:32px;margin-bottom:12px">📦</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Доставка по Узбекистану</div><div style="font-size:14px;color:var(--text-2);line-height:1.6">Собственная логистика в Ташкенте, ТК по всей стране.</div></div>
-          <div class="card card-body"><div style="font-size:32px;margin-bottom:12px">🤝</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Профессиональный подбор</div><div style="font-size:14px;color:var(--text-2);line-height:1.6">Инженеры-технологи помогут выбрать оптимальное решение для вашего проекта.</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="section-sm">
-      <div class="container" style="text-align:center">
-        <h2 style="font-size:32px;font-weight:800;margin-bottom:12px">Нужна консультация?</h2>
-        <p style="color:var(--text-2);margin-bottom:28px">Наши инженеры помогут подобрать оборудование под ваш проект</p>
-        <div style="display:flex;gap:12px;justify-content:center">
-          <button class="btn btn-primary btn-lg" onclick="nav('contacts.html')">Написать нам</button>
-          <a class="btn btn-outline btn-lg" href="tel:+998712345678">+998 71 234-56-78</a>
-        </div>
-      </div>
-    </section>
-
-  </main>
+  <main id="main-content"></main>
 
   <script src="js/main.js"></script>
   <script src="js/header.js"></script>
   <script>
     injectShell({ page: 'index.html' });
 
-    document.getElementById('categories-grid').innerHTML = CATEGORIES.map(c =>
-      `<div class="cat-card" onclick="nav('catalog.html?cat=${c.id}')">
-        <div class="cat-icon" style="background:${c.color}20">${c.emoji}</div>
-        <div class="cat-name">${c.name}</div>
-        <div class="cat-count">${c.count} позиций</div>
-        <div class="cat-arrow">→</div>
-      </div>`).join('');
+    // All page text is rendered via t() so language switch works on reload
+    const I = {
+      ru: {
+        eyebrow: 'Официальный дистрибьютор в Узбекистане',
+        h1a: 'Промышленное', h1b: 'оборудование', h1c: 'под любую задачу',
+        sub: 'Насосы, компрессоры, арматура, электрооборудование. Более 5000 позиций в наличии. Доставка по всему Узбекистану.',
+        stat1: 'Позиций в наличии', stat2: 'На рынке', stat3: 'Клиентов',
+        sectionsCat: 'Разделы', catalogTitle: 'Каталог оборудования', allCat: 'Весь каталог →',
+        promoTitle: '🔥 Горячие предложения июля',
+        promoSub: 'Скидки до 25% на насосное и компрессорное оборудование',
+        promoBtn: 'Смотреть акции',
+        hitsLabel: 'Хиты продаж', hitsTitle: 'Популярные товары', allProducts: 'Все товары →',
+        howLabel: 'Просто', howTitle: 'Как сделать заказ',
+        step: 'ШАГ', steps: [
+          { icon:'🔍', title:'Выберите товар', desc:'Найдите нужную позицию в каталоге или свяжитесь с менеджером' },
+          { icon:'🛒', title:'Добавьте в корзину', desc:'Укажите количество и оформите заказ онлайн за 2 минуты' },
+          { icon:'📞', title:'Подтверждение', desc:'Наш менеджер свяжется с вами и уточнит детали доставки' },
+          { icon:'🚚', title:'Получите заказ', desc:'Доставим по Ташкенту за 1 день, по Узбекистану за 2–5 дней' },
+        ],
+        whyLabel: 'Почему мы', whyTitle: 'Наши преимущества', advantages: [
+          { icon:'⚡', title:'Быстрая отгрузка', desc:'80% товаров в наличии на складе в Ташкенте. Отгрузка в день заказа.' },
+          { icon:'📜', title:'Гарантия оригинала', desc:'Все товары имеют сертификаты соответствия и официальную гарантию производителя.' },
+          { icon:'🛡️', title:'Гарантийный сервис', desc:'Собственный сервисный центр. Ремонт и обслуживание оборудования.' },
+          { icon:'💰', title:'Конкурентные цены', desc:'Прямые поставки от производителей без наценки посредников.' },
+          { icon:'📦', title:'Доставка по Узбекистану', desc:'Собственная логистика в Ташкенте, ТК по всей стране.' },
+          { icon:'🤝', title:'Профессиональный подбор', desc:'Инженеры-технологи помогут выбрать оптимальное решение для вашего проекта.' },
+        ],
+        ctaTitle: 'Нужна консультация?', ctaSub: 'Наши инженеры помогут подобрать оборудование под ваш проект',
+        ctaBtn: 'Написать нам',
+        positions: 'позиций',
+      },
+      uz: {
+        eyebrow: 'O\'zbekistondagi rasmiy distribyutor',
+        h1a: 'Sanoat', h1b: 'uskunalari', h1c: 'har qanday vazifa uchun',
+        sub: 'Nasoslar, kompressorlar, armatura, elektr jihozlar. Omborda 5000 dan ortiq mahsulot. O\'zbekiston bo\'ylab yetkazib berish.',
+        stat1: 'Mahsulot mavjud', stat2: 'Bozorda', stat3: 'Mijozlar',
+        sectionsCat: 'Bo\'limlar', catalogTitle: 'Uskunalar katalogi', allCat: 'Barcha katalog →',
+        promoTitle: '🔥 Iyul oyining issiq takliflari',
+        promoSub: 'Nasos va kompressor uskunalariga 25% gacha chegirma',
+        promoBtn: 'Aksiyalarni ko\'rish',
+        hitsLabel: 'Eng ko\'p sotilgan', hitsTitle: 'Mashhur mahsulotlar', allProducts: 'Barcha mahsulotlar →',
+        howLabel: 'Oson', howTitle: 'Qanday buyurtma berish',
+        step: 'QADAM', steps: [
+          { icon:'🔍', title:'Mahsulot tanlang', desc:'Katalogdan kerakli mahsulotni toping yoki menejer bilan bog\'laning' },
+          { icon:'🛒', title:'Savatga qo\'shing', desc:'Miqdorni ko\'rsating va 2 daqiqada onlayn buyurtma bering' },
+          { icon:'📞', title:'Tasdiqlash', desc:'Menejerimiz siz bilan bog\'lanib, yetkazib berish tafsilotlarini aniqlashtiradi' },
+          { icon:'🚚', title:'Buyurtmani oling', desc:'Toshkent bo\'ylab 1 kunda, O\'zbekiston bo\'ylab 2–5 kunda yetkazamiz' },
+        ],
+        whyLabel: 'Nima uchun biz', whyTitle: 'Bizning afzalliklarimiz', advantages: [
+          { icon:'⚡', title:'Tezkor jo\'natish', desc:'Mahsulotlarning 80% Toshkentdagi omborida mavjud. Buyurtma kuni jo\'natiladi.' },
+          { icon:'📜', title:'Original kafolati', desc:'Barcha mahsulotlar sertifikatlarga va ishlab chiqaruvchi kafolatiga ega.' },
+          { icon:'🛡️', title:'Kafolat servisi', desc:'O\'z servis markazimiz. Uskunalarni ta\'mirlash va texnik xizmat.' },
+          { icon:'💰', title:'Raqobatbardosh narxlar', desc:'Ishlab chiqaruvchilardan to\'g\'ridan-to\'g\'ri yetkazib berish.' },
+          { icon:'📦', title:'O\'zbekiston bo\'ylab yetkazish', desc:'Toshkentda o\'z logistikamiz, butun mamlakat bo\'ylab TK orqali.' },
+          { icon:'🤝', title:'Professional tanlov', desc:'Muhandislar loyihangiz uchun optimal yechimni tanlashda yordam beradi.' },
+        ],
+        ctaTitle: 'Maslahat kerakmi?', ctaSub: 'Muhandislarimiz loyihangiz uchun uskunalarni tanlashda yordam beradi',
+        ctaBtn: 'Bizga yozing',
+        positions: 'mahsulot',
+      },
+    };
+
+    const L = I[currentLang] || I.ru;
+
+    document.getElementById('main-content').innerHTML = `
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-grid"></div>
+        <div class="container">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+            <div class="hero-content">
+              <div class="hero-eyebrow">
+                <span class="hero-eyebrow-dot"></span>
+                ${L.eyebrow}
+              </div>
+              <h1 class="hero-title">${L.h1a}<br><span>${L.h1b}</span><br>${L.h1c}</h1>
+              <p class="hero-sub">${L.sub}</p>
+              <div class="hero-btns">
+                <button class="btn btn-primary btn-lg" onclick="nav('catalog.html')">${t('btn.catalog')}</button>
+                <button class="btn btn-outline btn-lg" onclick="nav('contacts.html')">${t('btn.quote')}</button>
+              </div>
+              <div class="hero-stats">
+                <div><div class="hero-stat-num">5 200+</div><div class="hero-stat-label">${L.stat1}</div></div>
+                <div><div class="hero-stat-num">16 ${currentLang==='uz'?'yil':'лет'}</div><div class="hero-stat-label">${L.stat2}</div></div>
+                <div><div class="hero-stat-num">3 400+</div><div class="hero-stat-label">${L.stat3}</div></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              ${[
+                {id:'pumps', bg:'rgba(59,130,246,.15)', emoji:'💧'},
+                {id:'compressors', bg:'rgba(139,92,246,.15)', emoji:'🔧'},
+                {id:'electric', bg:'rgba(245,158,11,.15)', emoji:'⚡'},
+                {id:'valves', bg:'rgba(236,72,153,.15)', emoji:'🔩'},
+              ].map(item => {
+                const cat = CATEGORIES.find(c => c.id === item.id);
+                return `<div onclick="nav('catalog.html?cat=${item.id}')" class="cat-card">
+                  <div class="cat-icon" style="background:${item.bg}">${item.emoji}</div>
+                  <div class="cat-name">${cat ? catName(cat) : item.id}</div>
+                  <div class="cat-count">${cat ? cat.count : ''} ${L.positions}</div>
+                  <div class="cat-arrow">→</div>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BRANDS BAR -->
+      <section style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0">
+        <div class="container">
+          <div style="display:flex;align-items:center;gap:40px;overflow-x:auto;padding-bottom:2px">
+            <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);white-space:nowrap;flex-shrink:0">${t('official.dist')}</span>
+            ${['Grundfos','Atlas Copco','Siemens','ABB','Danfoss','Tyco','Mobil'].map(b =>
+              `<span onclick="nav('catalog.html?brand=${encodeURIComponent(b)}')" style="font-size:15px;font-weight:700;color:var(--text-3);white-space:nowrap;cursor:pointer;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">${b}</span>`
+            ).join('')}
+          </div>
+        </div>
+      </section>
+
+      <!-- CATEGORIES -->
+      <section class="section">
+        <div class="container">
+          <div class="flex-between section-header">
+            <div>
+              <div class="section-label">${L.sectionsCat}</div>
+              <h2 class="section-title">${L.catalogTitle}</h2>
+            </div>
+            <button class="btn btn-outline" onclick="nav('catalog.html')">${L.allCat}</button>
+          </div>
+          <div class="grid-4">
+            ${CATEGORIES.map(c => `<div class="cat-card" onclick="nav('catalog.html?cat=${c.id}')">
+              <div class="cat-icon" style="background:${c.color}20">${c.emoji}</div>
+              <div class="cat-name">${catName(c)}</div>
+              <div class="cat-count">${c.count} ${L.positions}</div>
+              <div class="cat-arrow">→</div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </section>
+
+      <!-- PROMO BANNER -->
+      <section class="section-sm">
+        <div class="container">
+          <div class="promo-banner">
+            <div>
+              <div class="promo-banner-title">${L.promoTitle}</div>
+              <div class="promo-banner-sub">${L.promoSub}</div>
+            </div>
+            <button class="btn btn-lg" style="background:#fff;color:#1a1a2e;font-weight:700;flex-shrink:0" onclick="nav('promo.html')">${L.promoBtn}</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED PRODUCTS -->
+      <section class="section">
+        <div class="container">
+          <div class="flex-between section-header">
+            <div>
+              <div class="section-label">${L.hitsLabel}</div>
+              <h2 class="section-title">${L.hitsTitle}</h2>
+            </div>
+            <button class="btn btn-outline" onclick="nav('catalog.html')">${L.allProducts}</button>
+          </div>
+          <div class="grid-4" id="products-grid"></div>
+        </div>
+      </section>
+
+      <!-- HOW TO ORDER -->
+      <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+        <div class="container">
+          <div class="section-header" style="text-align:center">
+            <div class="section-label">${L.howLabel}</div>
+            <h2 class="section-title">${L.howTitle}</h2>
+          </div>
+          <div class="grid-4">
+            ${L.steps.map((s,i) => `<div style="text-align:center;padding:24px 16px">
+              <div style="width:56px;height:56px;border-radius:50%;background:var(--primary-g);border:2px solid rgba(79,142,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px">${s.icon}</div>
+              <div style="font-size:11px;font-weight:800;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">${L.step} ${i+1}</div>
+              <div style="font-size:16px;font-weight:700;margin-bottom:8px">${s.title}</div>
+              <div style="font-size:13px;color:var(--text-2);line-height:1.6">${s.desc}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </section>
+
+      <!-- ADVANTAGES -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header" style="text-align:center">
+            <div class="section-label">${L.whyLabel}</div>
+            <h2 class="section-title">${L.whyTitle}</h2>
+          </div>
+          <div class="grid-3">
+            ${L.advantages.map(a => `<div class="card card-body">
+              <div style="font-size:32px;margin-bottom:12px">${a.icon}</div>
+              <div style="font-size:16px;font-weight:700;margin-bottom:8px">${a.title}</div>
+              <div style="font-size:14px;color:var(--text-2);line-height:1.6">${a.desc}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="section-sm">
+        <div class="container" style="text-align:center">
+          <h2 style="font-size:32px;font-weight:800;margin-bottom:12px">${L.ctaTitle}</h2>
+          <p style="color:var(--text-2);margin-bottom:28px">${L.ctaSub}</p>
+          <div style="display:flex;gap:12px;justify-content:center">
+            <button class="btn btn-primary btn-lg" onclick="nav('contacts.html')">${L.ctaBtn}</button>
+            <a class="btn btn-outline btn-lg" href="tel:+998712345678">+998 71 234-56-78</a>
+          </div>
+        </div>
+      </section>
+    `;
 
     document.getElementById('products-grid').innerHTML = PRODUCTS.slice(0,8).map(p => renderProductCard(p)).join('');
   </script>

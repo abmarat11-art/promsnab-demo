@@ -15,17 +15,19 @@ const PRODUCTS = [
 ];
 
 const CATEGORIES = [
-  { id:'pumps',      name:'Насосы',        emoji:'💧', color:'#3B82F6', count:48 },
-  { id:'compressors',name:'Компрессоры',   emoji:'🔧', color:'#8B5CF6', count:32 },
-  { id:'valves',     name:'Арматура',      emoji:'🔩', color:'#EC4899', count:127 },
-  { id:'electric',   name:'Электрооборудование', emoji:'⚡', color:'#F59E0B', count:89 },
-  { id:'fire',       name:'Пожарное',      emoji:'🚒', color:'#EF4444', count:64 },
-  { id:'pipes',      name:'Трубопроводы',  emoji:'🪝', color:'#10B981', count:215 },
-  { id:'lubricants', name:'Смазочные',     emoji:'🛢️', color:'#06B6D4', count:43 },
-  { id:'machines',   name:'Станки',        emoji:'⚙️', color:'#6366F1', count:17 },
+  { id:'pumps',      name:'Насосы',              nameUz:'Nasoslar',          emoji:'💧', color:'#3B82F6', count:48 },
+  { id:'compressors',name:'Компрессоры',         nameUz:'Kompressorlar',     emoji:'🔧', color:'#8B5CF6', count:32 },
+  { id:'valves',     name:'Арматура',            nameUz:'Armatura',          emoji:'🔩', color:'#EC4899', count:127 },
+  { id:'electric',   name:'Электрооборудование', nameUz:'Elektr jihozlar',   emoji:'⚡', color:'#F59E0B', count:89 },
+  { id:'fire',       name:'Пожарное',            nameUz:'Yong\'in',          emoji:'🚒', color:'#EF4444', count:64 },
+  { id:'pipes',      name:'Трубопроводы',        nameUz:'Quvurlar',          emoji:'🪝', color:'#10B981', count:215 },
+  { id:'lubricants', name:'Смазочные',           nameUz:'Moylash',           emoji:'🛢️', color:'#06B6D4', count:43 },
+  { id:'machines',   name:'Станки',              nameUz:'Dastgohlar',        emoji:'⚙️', color:'#6366F1', count:17 },
 ];
 
 const CAT_NAMES = Object.fromEntries(CATEGORIES.map(c => [c.id, c.name]));
+function catName(c) { return currentLang === 'uz' && c.nameUz ? c.nameUz : c.name; }
+function catNameById(id) { const c = CATEGORIES.find(x => x.id === id); return c ? catName(c) : id; }
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 const state = {
@@ -48,7 +50,7 @@ function addToCart(id) {
   saveCart();
   renderCartBadge();
   renderCart();
-  toast('success', `${p.name} добавлен в корзину`);
+  toast('success', `${p.name} → ${t('cart.title')}`);
 }
 
 function removeFromCart(id) {
@@ -75,8 +77,8 @@ function renderCart() {
   const list = document.getElementById('cart-items');
   if (!list) return;
   if (!state.cart.length) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🛒</div><h3>Корзина пуста</h3><p>Добавьте товары из каталога</p></div>`;
-    document.getElementById('cart-total-price').textContent = '0 сум';
+    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🛒</div><h3>${t('cart.empty')}</h3><p>${t('cart.emptySub')}</p></div>`;
+    document.getElementById('cart-total-price').textContent = `0 ${t('currency')}`;
     return;
   }
   list.innerHTML = state.cart.map(({ id, qty }) => {
@@ -86,7 +88,7 @@ function renderCart() {
       <div class="cart-item-img">${p.emoji}</div>
       <div style="flex:1;min-width:0">
         <div class="cart-item-name">${p.name}</div>
-        <div class="cart-item-price">${fmt(p.price)} сум / шт.</div>
+        <div class="cart-item-price">${fmt(p.price)} ${t('currency')}</div>
         <div class="cart-qty">
           <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
           <span class="qty-val">${qty}</span>
@@ -104,7 +106,7 @@ function renderCart() {
     return s + (p ? p.price * qty : 0);
   }, 0);
   const el = document.getElementById('cart-total-price');
-  if (el) el.textContent = fmt(total) + ' сум';
+  if (el) el.textContent = fmt(total) + ' ' + t('currency');
 }
 
 function openCart() {
@@ -173,8 +175,8 @@ function openQuickView(id) {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start">
       <div style="background:var(--bg-3);border-radius:var(--r-lg);aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:72px">${p.emoji}</div>
       <div>
-        <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">${CAT_NAMES[p.category]||p.category} · ${p.brand}</div>
-        <div style="font-size:13px;color:var(--text-2);margin-bottom:4px">Арт: ${p.sku}</div>
+        <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">${catNameById(p.category)} · ${p.brand}</div>
+        <div style="font-size:13px;color:var(--text-2);margin-bottom:4px">${t('product.art')} ${p.sku}</div>
         <div style="margin-bottom:12px"><span style="color:#F59E0B">${stars(p.rating)}</span> <span style="color:var(--text-2);font-size:13px">${p.rating} (${p.reviews} ${t('reviews')})</span></div>
         <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:20px">${p.desc}</p>
         <div style="margin-bottom:20px">
@@ -186,6 +188,7 @@ function openQuickView(id) {
           <button class="btn btn-outline fav-btn${isFav(p.id)?' active':''}" data-id="${p.id}" onclick="toggleFav(${p.id},this)" style="flex-shrink:0;width:44px">♡</button>
         </div>
         <button class="btn btn-outline w-full" style="margin-top:10px" onclick="closeQuickView();nav('product.html?id=${p.id}')">${t('btn.details')}</button>
+
       </div>
     </div>`;
   document.getElementById('quickview-modal')?.classList.add('open');
@@ -204,25 +207,103 @@ function submitCallback(e) {
 // ─── LANGUAGE ─────────────────────────────────────────────────────────────────
 const TRANSLATIONS = {
   ru: {
+    // Nav
     'nav.home':'Главная','nav.catalog':'Каталог','nav.promo':'Акции','nav.delivery':'Доставка',
     'nav.gallery':'Галерея','nav.articles':'Статьи','nav.about':'О компании','nav.contacts':'Контакты',
+    // Logo & search
+    'logo.sub':'Ташкент · с 2008','search.ph':'Поиск товаров...',
+    // Dashboard
+    'dash.title':'Панель управления','dash.orders':'Заказов сегодня','dash.revenue':'Выручка (сум)',
+    'dash.visitors':'Посетителей','dash.inCart':'В корзинах','dash.lastOrders':'Последние заказы',
+    'dash.topCats':'Популярные категории','dash.actions':'Быстрые действия',
+    'status.paid':'Оплачен','status.pending':'В обработке','status.new':'Новый',
+    'dash.btn.catalog':'📦 Каталог','dash.btn.orders':'📋 Заказы',
+    'dash.btn.contacts':'📞 Контакты','dash.btn.cart':'🛒 Корзина',
+    // Cart
+    'cart.title':'Корзина','cart.total':'Итого:','cart.checkout':'Оформить заказ →',
+    'cart.empty':'Корзина пуста','cart.emptySub':'Добавьте товары из каталога',
+    // Checkout
+    'checkout.title':'Оформление заказа','checkout.name':'Имя *','checkout.phone':'Телефон *',
+    'checkout.email':'Email','checkout.company':'Компания','checkout.address':'Адрес доставки *',
+    'checkout.comment':'Комментарий','checkout.submit':'Подтвердить заказ →',
+    'ph.name':'Ваше имя','ph.company':'Название организации',
+    'ph.address':'г. Ташкент, ул. ...','ph.comment':'Дополнительные пожелания...',
+    // Favorites
     'favs.title':'Избранное','fav.added':'Добавлено в избранное','fav.removed':'Удалено из избранного',
     'fav.empty':'Избранное пусто','fav.emptySub':'Добавляйте товары кнопкой ♡',
-    'btn.toCart':'+ В корзину','btn.cancel':'Отмена','btn.details':'Подробнее →',
-    'callback.title':'Обратный звонок','callback.sub':'Оставьте номер — менеджер перезвонит в течение 15 минут',
+    // Callback
+    'callback.title':'Обратный звонок',
+    'callback.sub':'Оставьте номер — менеджер перезвонит в течение 15 минут',
     'callback.name':'Имя','callback.phone':'Телефон *','callback.time':'Удобное время',
     'callback.submit':'Перезвоните мне →','callback.sent':'Заявка принята! Перезвоним скоро.',
+    // Buttons
+    'btn.toCart':'+ В корзину','btn.cancel':'Отмена','btn.details':'Подробнее →',
+    'btn.allCats':'Все разделы →','btn.allProducts':'Все товары →',
+    'btn.catalog':'Открыть каталог →','btn.quote':'Получить КП',
+    // Product
+    'product.art':'Арт:',
+    // Footer
+    'footer.desc':'Надёжный поставщик промышленного оборудования в Узбекистане. Более 5000 позиций в наличии.',
+    'footer.catalog':'Каталог','footer.company':'Компания','footer.contacts':'Контакты',
+    'footer.about':'О компании','footer.promo':'Акции','footer.gallery':'Фотогалерея',
+    'footer.articles':'Статьи','footer.delivery':'Оплата и доставка','footer.docs':'Документы',
+    'footer.orders':'Отслеживание заказа','footer.allCats':'Все разделы →',
+    'footer.schedule':'Пн–Пт: 9:00 – 18:00',
+    'footer.copy':'© 2008–2026 PromSnab. Все права защищены.',
+    'footer.privacy':'Политика конфиденциальности','footer.terms':'Условия использования',
+    'official.dist':'Официальный дистрибьютор',
+    // General
     'currency':'сум','reviews':'отзывов',
   },
   uz: {
-    'nav.home':'Bosh sahifa','nav.catalog':'Katalog','nav.promo':'Aksiyalar','nav.delivery':'Yetkazib berish',
-    'nav.gallery':'Fotogalereya','nav.articles':'Maqolalar','nav.about':'Biz haqimizda','nav.contacts':'Bog\'lanish',
-    'favs.title':'Tanlanganlar','fav.added':'Tanlanganlarga qo\'shildi','fav.removed':'Tanlanganlarga o\'chirildi',
+    // Nav
+    'nav.home':'Bosh sahifa','nav.catalog':'Katalog','nav.promo':'Aksiyalar',
+    'nav.delivery':'Yetkazib berish','nav.gallery':'Fotogalereya','nav.articles':'Maqolalar',
+    'nav.about':'Biz haqimizda','nav.contacts':'Bog\'lanish',
+    // Logo & search
+    'logo.sub':'Toshkent · 2008 yildan','search.ph':'Mahsulot qidirish...',
+    // Dashboard
+    'dash.title':'Boshqaruv paneli','dash.orders':'Bugungi buyurtmalar','dash.revenue':'Tushum (so\'m)',
+    'dash.visitors':'Tashrif buyuruvchilar','dash.inCart':'Savatlarda',
+    'dash.lastOrders':'So\'nggi buyurtmalar','dash.topCats':'Mashhur kategoriyalar',
+    'dash.actions':'Tezkor amallar',
+    'status.paid':'To\'langan','status.pending':'Jarayonda','status.new':'Yangi',
+    'dash.btn.catalog':'📦 Katalog','dash.btn.orders':'📋 Buyurtmalar',
+    'dash.btn.contacts':'📞 Bog\'lanish','dash.btn.cart':'🛒 Savat',
+    // Cart
+    'cart.title':'Savat','cart.total':'Jami:','cart.checkout':'Buyurtma berish →',
+    'cart.empty':'Savat bo\'sh','cart.emptySub':'Katalogdan mahsulot qo\'shing',
+    // Checkout
+    'checkout.title':'Buyurtmani rasmiylashtirish','checkout.name':'Ism *','checkout.phone':'Telefon *',
+    'checkout.email':'Email','checkout.company':'Kompaniya','checkout.address':'Yetkazib berish manzili *',
+    'checkout.comment':'Izoh','checkout.submit':'Buyurtmani tasdiqlash →',
+    'ph.name':'Ismingiz','ph.company':'Tashkilot nomi',
+    'ph.address':'Toshkent sh., ko\'cha ...','ph.comment':'Qo\'shimcha takliflar...',
+    // Favorites
+    'favs.title':'Tanlanganlar','fav.added':'Tanlanganlarga qo\'shildi','fav.removed':'O\'chirildi',
     'fav.empty':'Tanlanganlar bo\'sh','fav.emptySub':'♡ tugmasi orqali mahsulot qo\'shing',
-    'btn.toCart':'+ Savatga','btn.cancel':'Bekor qilish','btn.details':'Batafsil →',
-    'callback.title':'Qayta qo\'ng\'iroq','callback.sub':'Raqamingizni qoldiring — menejer 15 daqiqada qo\'ng\'iroq qiladi',
+    // Callback
+    'callback.title':'Qayta qo\'ng\'iroq',
+    'callback.sub':'Raqamingizni qoldiring — menejer 15 daqiqada qo\'ng\'iroq qiladi',
     'callback.name':'Ism','callback.phone':'Telefon *','callback.time':'Qulay vaqt',
-    'callback.submit':'Menga qo\'ng\'iroq qiling →','callback.sent':'Ariza qabul qilindi! Tez orada qo\'ng\'iroq qilamiz.',
+    'callback.submit':'Menga qo\'ng\'iroq qiling →','callback.sent':'Ariza qabul qilindi!',
+    // Buttons
+    'btn.toCart':'+ Savatga','btn.cancel':'Bekor qilish','btn.details':'Batafsil →',
+    'btn.allCats':'Barcha bo\'limlar →','btn.allProducts':'Barcha mahsulotlar →',
+    'btn.catalog':'Katalogni ochish →','btn.quote':'Taklif olish',
+    // Product
+    'product.art':'Art:',
+    // Footer
+    'footer.desc':'O\'zbekistondagi sanoat uskunalari ishonchli ta\'minotchisi. 5000 dan ortiq mahsulot mavjud.',
+    'footer.catalog':'Katalog','footer.company':'Kompaniya','footer.contacts':'Bog\'lanish',
+    'footer.about':'Biz haqimizda','footer.promo':'Aksiyalar','footer.gallery':'Fotogalereya',
+    'footer.articles':'Maqolalar','footer.delivery':'To\'lov va yetkazib berish','footer.docs':'Hujjatlar',
+    'footer.orders':'Buyurtmani kuzatish','footer.allCats':'Barcha bo\'limlar →',
+    'footer.schedule':'Du–Ju: 9:00 – 18:00',
+    'footer.copy':'© 2008–2026 PromSnab. Barcha huquqlar himoyalangan.',
+    'footer.privacy':'Maxfiylik siyosati','footer.terms':'Foydalanish shartlari',
+    'official.dist':'Rasmiy distribyutor',
+    // General
     'currency':'so\'m','reviews':'sharh',
   },
 };
@@ -233,16 +314,15 @@ function t(key) { return (TRANSLATIONS[currentLang]||TRANSLATIONS.ru)[key] || ke
 
 function applyLang(lang) {
   currentLang = lang;
-  localStorage.setItem('ps-lang', lang);
   const btn = document.getElementById('lang-toggle-btn');
   if (btn) btn.textContent = lang === 'ru' ? 'UZ' : 'RU';
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
-    if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) el.textContent = TRANSLATIONS[lang][key];
-  });
 }
 
-function toggleLang() { applyLang(currentLang === 'ru' ? 'uz' : 'ru'); }
+function toggleLang() {
+  const next = currentLang === 'ru' ? 'uz' : 'ru';
+  localStorage.setItem('ps-lang', next);
+  window.location.reload();
+}
 
 // ─── DASHBOARD ───────────────────────────────────────────────────────────────
 function openDash() {
@@ -285,22 +365,22 @@ function renderProductCard(p, link=true) {
       <div class="product-img-inner">${p.emoji}</div>
       <div class="product-badges">${badgeHtml(p.badge)}</div>
       <div class="product-actions-hover">
-        <button class="p-action-btn fav-btn${isFav(p.id)?' active':''}" data-id="${p.id}" onclick="event.stopPropagation();toggleFav(${p.id},this)" title="В избранное">♡</button>
-        <button class="p-action-btn" onclick="event.stopPropagation();openQuickView(${p.id})" title="Быстрый просмотр">👁</button>
-        <button class="p-action-btn" onclick="event.stopPropagation();addToCart(${p.id})" title="В корзину">🛒</button>
+        <button class="p-action-btn fav-btn${isFav(p.id)?' active':''}" data-id="${p.id}" onclick="event.stopPropagation();toggleFav(${p.id},this)" title="♡">♡</button>
+        <button class="p-action-btn" onclick="event.stopPropagation();openQuickView(${p.id})" title="👁">👁</button>
+        <button class="p-action-btn" onclick="event.stopPropagation();addToCart(${p.id})" title="🛒">🛒</button>
       </div>
     </div>
     <div class="product-info">
-      <div class="product-category">${CAT_NAMES[p.category]||p.category}</div>
+      <div class="product-category">${catNameById(p.category)}</div>
       <div class="product-name">${p.name}</div>
-      <div class="product-sku">Арт: ${p.sku}</div>
+      <div class="product-sku">${t('product.art')} ${p.sku}</div>
       <div class="product-rating"><span class="stars">${stars(p.rating)}</span>${p.rating} (${p.reviews})</div>
       <div class="product-footer">
         <div>
-          <div class="product-price">${fmt(p.price)} <small style="font-size:12px;font-weight:500">сум</small></div>
-          ${p.old?`<div class="product-price-old">${fmt(p.old)} сум</div>`:''}
+          <div class="product-price">${fmt(p.price)} <small style="font-size:12px;font-weight:500">${t('currency')}</small></div>
+          ${p.old?`<div class="product-price-old">${fmt(p.old)} ${t('currency')}</div>`:''}
         </div>
-        <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();addToCart(${p.id})">+ В корзину</button>
+        <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();addToCart(${p.id})">${t('btn.toCart')}</button>
       </div>
     </div>
   </div>`;
@@ -319,7 +399,7 @@ function doSearch(q) {
 
 // ─── CHECKOUT MODAL ──────────────────────────────────────────────────────────
 function openCheckout() {
-  if (!state.cart.length) { toast('error', 'Корзина пуста'); return; }
+  if (!state.cart.length) { toast('error', t('cart.empty')); return; }
   const o = document.getElementById('checkout-modal');
   if (o) { o.classList.add('open'); closeCart(); }
 }
@@ -331,34 +411,11 @@ function submitOrder(e) {
   e.preventDefault();
   closeCheckout();
   state.cart = []; saveCart(); renderCartBadge(); renderCart();
-  toast('success', 'Заказ оформлен! Мы свяжемся с вами.');
+  toast('success', t('callback.sent'));
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   renderCartBadge();
   renderFavBadge();
-  applyLang(currentLang);
-
-  // Logo click → dashboard
-  document.querySelector('.logo')?.addEventListener('click', openDash);
-  document.querySelector('.dash-overlay')?.addEventListener('click', closeDash);
-  document.getElementById('dash-close')?.addEventListener('click', closeDash);
-
-  // Cart
-  document.getElementById('cart-close')?.addEventListener('click', closeCart);
-
-  // Search enter
-  document.getElementById('header-search')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') doSearch(e.target.value);
-  });
-  document.getElementById('header-search-btn')?.addEventListener('click', () => {
-    doSearch(document.getElementById('header-search').value);
-  });
-
-  // Highlight active nav
-  const path = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-link').forEach(a => {
-    if (a.dataset.page === path) a.classList.add('active');
-  });
 });

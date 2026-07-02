@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Контакты — PromSnab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="main-content">
+    <div class="page-hero">
+      <div class="container">
+        <div class="breadcrumb">
+          <a onclick="nav('index.html')">Главная</a>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-current">Контакты</span>
+        </div>
+        <h1 class="page-hero-title">Контакты и обратная связь</h1>
+        <p class="page-hero-sub">Свяжитесь с нами любым удобным способом</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px">
+
+          <!-- CONTACT INFO -->
+          <div>
+            <h2 style="font-size:24px;font-weight:800;margin-bottom:24px">Наши контакты</h2>
+
+            <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:32px">
+              <div class="card card-body flex gap-4">
+                <div style="font-size:28px">📍</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:4px">Адрес офиса</div>
+                  <div style="font-size:14px;color:var(--text-2)">г. Ташкент, ул. Катартал 67,<br>бизнес-центр «Малика», офис 4</div>
+                </div>
+              </div>
+              <div class="card card-body flex gap-4" style="cursor:pointer" onclick="window.location='tel:+998712345678'">
+                <div style="font-size:28px">📞</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:4px">Телефон</div>
+                  <div style="font-size:14px;color:var(--primary)">+998 71 234-56-78</div>
+                  <div style="font-size:12px;color:var(--text-2)">Пн–Пт: 9:00 – 18:00</div>
+                </div>
+              </div>
+              <div class="card card-body flex gap-4" style="cursor:pointer" onclick="window.location='tel:+998901234567'">
+                <div style="font-size:28px">📱</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:4px">Telegram / WhatsApp</div>
+                  <div style="font-size:14px;color:var(--primary)">+998 90 123-45-67</div>
+                  <div style="font-size:12px;color:var(--text-2)">Пн–Вс: 9:00 – 21:00</div>
+                </div>
+              </div>
+              <div class="card card-body flex gap-4" style="cursor:pointer" onclick="window.location='mailto:info@promsnab.uz'">
+                <div style="font-size:28px">✉️</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:4px">Email</div>
+                  <div style="font-size:14px;color:var(--primary)">info@promsnab.uz</div>
+                  <div style="font-size:12px;color:var(--text-2)">Ответим в течение 2 часов</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MAP PLACEHOLDER -->
+            <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer" onclick="toast('info','Открыть в Яндекс.Картах')">
+              <div style="font-size:48px">🗺️</div>
+              <div style="font-size:14px;color:var(--text-2)">г. Ташкент, ул. Катартал 67</div>
+              <button class="btn btn-outline btn-sm">Открыть карту</button>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
+              <div class="card card-body" style="text-align:center">
+                <div style="font-size:24px;margin-bottom:6px">⏰</div>
+                <div style="font-size:13px;font-weight:600;margin-bottom:4px">Офис</div>
+                <div style="font-size:12px;color:var(--text-2)">Пн–Пт: 9:00–18:00<br>Сб: 10:00–15:00</div>
+              </div>
+              <div class="card card-body" style="text-align:center">
+                <div style="font-size:24px;margin-bottom:6px">🏭</div>
+                <div style="font-size:13px;font-weight:600;margin-bottom:4px">Склад</div>
+                <div style="font-size:12px;color:var(--text-2)">Пн–Пт: 8:00–18:00<br>Сб: 9:00–14:00</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONTACT FORM -->
+          <div>
+            <h2 style="font-size:24px;font-weight:800;margin-bottom:8px">Написать нам</h2>
+            <p style="font-size:14px;color:var(--text-2);margin-bottom:24px">Заполните форму и мы свяжемся с вами в течение 1 рабочего часа</p>
+
+            <form onsubmit="submitContact(event)" style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label">Имя *</label>
+                  <input class="form-control" required placeholder="Ваше имя">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Телефон *</label>
+                  <input class="form-control" required placeholder="+998 XX XXX-XX-XX">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" placeholder="email@company.uz">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Компания / Организация</label>
+                <input class="form-control" placeholder="Название организации">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Тема обращения</label>
+                <select class="form-control">
+                  <option>Запрос коммерческого предложения</option>
+                  <option>Подбор оборудования</option>
+                  <option>Техническая консультация</option>
+                  <option>Сервисное обслуживание</option>
+                  <option>Сотрудничество / Дилерство</option>
+                  <option>Другое</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Сообщение *</label>
+                <textarea class="form-control" required placeholder="Опишите ваш запрос: какое оборудование нужно, в каком количестве, для каких целей..." style="min-height:120px"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Прикрепить файл (спецификация, ТЗ)</label>
+                <input class="form-control" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx">
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg w-full">Отправить запрос →</button>
+              <p style="font-size:11px;color:var(--text-3);margin-top:12px;text-align:center">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANAGERS -->
+    <section class="section-sm" style="background:var(--bg-2);border-top:1px solid var(--border)">
+      <div class="container">
+        <div class="section-header" style="text-align:center">
+          <div class="section-label">Команда продаж</div>
+          <h2 class="section-title">Наши менеджеры</h2>
+        </div>
+        <div class="grid-3" id="managers-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/header.js"></script>
+  <script>
+    injectShell({ page: 'contacts.html', title: 'Контакты' });
+
+    document.getElementById('managers-grid').innerHTML = [
+      ['👨‍💼','Бобур Турдиев','b.turdiyev@promsnab.uz','+998 90 111-22-33','Насосы, компрессоры'],
+      ['👩‍💼','Нилуфар Эшматова','n.eshmatova@promsnab.uz','+998 90 222-33-44','Арматура, трубопроводы'],
+      ['👨‍💻','Алишер Назаров','a.nazarov@promsnab.uz','+998 90 333-44-55','Электрооборудование, автоматика'],
+    ].map(([em,name,email,tel,spec]) => `<div class="card card-body" style="display:flex;gap:16px;align-items:flex-start">
+      <div style="font-size:40px;flex-shrink:0">${em}</div>
+      <div style="min-width:0;flex:1">
+        <div style="font-weight:700;margin-bottom:2px;word-break:break-word">${name}</div>
+        <div style="font-size:11px;color:var(--primary);font-weight:600;margin-bottom:6px;word-break:break-word">${spec}</div>
+        <a href="tel:${tel.replace(/[^+\d]/g,'')}" style="display:block;font-size:13px;color:var(--text-2);margin-bottom:2px;word-break:break-word">${tel}</a>
+        <a href="mailto:${email}" style="font-size:13px;color:var(--text-2);word-break:break-word">${email}</a>
+      </div>
+    </div>`).join('');
+
+    function submitContact(e) {
+      e.preventDefault();
+      e.target.reset();
+      toast('success', 'Заявка отправлена! Мы свяжемся с вами в течение часа.');
+    }
+  </script>
+</body>
+</html>

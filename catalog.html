@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог — PromSnab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="main-content">
+    <div class="page-hero">
+      <div class="container">
+        <div class="breadcrumb">
+          <a onclick="nav('index.html')">Главная</a>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-current" id="bc-current">Каталог</span>
+        </div>
+        <div class="flex-between">
+          <div>
+            <h1 class="page-hero-title" id="page-title">Каталог товаров</h1>
+            <p class="page-hero-sub" id="page-sub">Более 5200 позиций промышленного оборудования</p>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm" onclick="nav('contacts.html')">📋 Запросить КП</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top:32px;padding-bottom:64px">
+      <div class="catalog-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="filter-sidebar">
+          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px">
+
+            <div class="filter-section">
+              <div class="filter-title">Раздел</div>
+              <div id="cat-filters">
+                <div class="filter-option">
+                  <input type="radio" name="cat" id="cat-all" value="" checked>
+                  <label for="cat-all">Все разделы</label>
+                  <span>635</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="filter-section">
+              <div class="filter-title">Бренд</div>
+              <div id="brand-filters">
+                <div class="filter-option"><input type="radio" name="brand" id="brand-all" value="" checked><label for="brand-all">Все бренды</label></div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="filter-section">
+              <div class="filter-title">Цена (сум)</div>
+              <div class="filter-range">
+                <input type="number" id="price-min" placeholder="От" min="0">
+                <input type="number" id="price-max" placeholder="До">
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="filter-section">
+              <div class="filter-title">Особое</div>
+              <div class="filter-option">
+                <input type="checkbox" id="f-sale" onchange="applyFilters()">
+                <label for="f-sale">Только акции</label>
+              </div>
+              <div class="filter-option">
+                <input type="checkbox" id="f-new" onchange="applyFilters()">
+                <label for="f-new">Новинки</label>
+              </div>
+              <div class="filter-option">
+                <input type="checkbox" id="f-hit" onchange="applyFilters()">
+                <label for="f-hit">Хиты продаж</label>
+              </div>
+            </div>
+
+            <button class="btn btn-outline w-full btn-sm" onclick="resetFilters()">Сбросить фильтры</button>
+          </div>
+        </aside>
+
+        <!-- MAIN -->
+        <div class="catalog-main">
+          <div class="sort-bar">
+            <span class="results-count" id="results-count">Загрузка...</span>
+            <select id="sort-select" onchange="applyFilters()">
+              <option value="default">По умолчанию</option>
+              <option value="price-asc">Цена: по возрастанию</option>
+              <option value="price-desc">Цена: по убыванию</option>
+              <option value="rating">По рейтингу</option>
+              <option value="name">По названию</option>
+            </select>
+          </div>
+
+          <div class="grid-3" id="products-grid"></div>
+
+          <div id="empty-state" class="empty-state hidden">
+            <div class="empty-state-icon">🔍</div>
+            <h3>Ничего не найдено</h3>
+            <p>Попробуйте изменить параметры фильтра</p>
+            <button class="btn btn-outline mt-4" onclick="resetFilters()">Сбросить фильтры</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/header.js"></script>
+  <script>
+    injectShell({ page: 'catalog.html', title: 'Каталог' });
+
+    const params = new URLSearchParams(location.search);
+    let activeCat = params.get('cat') || '';
+    let activeBrand = params.get('brand') || '';
+    let activeQ = params.get('q') || '';
+    let activeBadge = params.get('badge') || '';
+
+    // Build category radios
+    const catFilters = document.getElementById('cat-filters');
+    CATEGORIES.forEach(c => {
+      catFilters.innerHTML += `<div class="filter-option">
+        <input type="radio" name="cat" id="cat-${c.id}" value="${c.id}" ${activeCat===c.id?'checked':''} onchange="activeCat=this.value;applyFilters()">
+        <label for="cat-${c.id}">${c.emoji} ${c.name}</label>
+        <span>${c.count}</span>
+      </div>`;
+    });
+
+    // Build brand radios
+    const brands = [...new Set(PRODUCTS.map(p => p.brand))];
+    const brandFilters = document.getElementById('brand-filters');
+    brands.forEach(b => {
+      brandFilters.innerHTML += `<div class="filter-option">
+        <input type="radio" name="brand" id="brand-${b.replace(/\s/g,'')}" value="${b}" ${activeBrand===b?'checked':''} onchange="activeBrand=this.value;applyFilters()">
+        <label for="brand-${b.replace(/\s/g,'')}">${b}</label>
+      </div>`;
+    });
+
+    // Pre-fill special filters from URL
+    if (activeBadge === 'sale') document.getElementById('f-sale').checked = true;
+
+    // Set page title based on filters
+    if (activeQ) {
+      document.getElementById('page-title').textContent = `Поиск: "${activeQ}"`;
+      document.getElementById('bc-current').textContent = `Поиск: "${activeQ}"`;
+    } else if (activeCat) {
+      const c = CATEGORIES.find(x => x.id === activeCat);
+      if (c) {
+        document.getElementById('page-title').textContent = c.name;
+        document.getElementById('bc-current').textContent = c.name;
+      }
+    }
+    if (activeBrand) {
+      if (document.getElementById(`brand-${activeBrand.replace(/\s/g,'')}`))
+        document.getElementById(`brand-${activeBrand.replace(/\s/g,'')}`).checked = true;
+    }
+
+    function applyFilters() {
+      activeCat = document.querySelector('input[name=cat]:checked')?.value || '';
+      activeBrand = document.querySelector('input[name=brand]:checked')?.value || '';
+      const priceMin = parseInt(document.getElementById('price-min').value) || 0;
+      const priceMax = parseInt(document.getElementById('price-max').value) || Infinity;
+      const onlySale = document.getElementById('f-sale').checked;
+      const onlyNew  = document.getElementById('f-new').checked;
+      const onlyHit  = document.getElementById('f-hit').checked;
+      const sort = document.getElementById('sort-select').value;
+
+      let results = PRODUCTS.filter(p => {
+        if (activeCat && p.category !== activeCat) return false;
+        if (activeBrand && p.brand !== activeBrand) return false;
+        if (p.price < priceMin || p.price > priceMax) return false;
+        if (onlySale && p.badge !== 'sale') return false;
+        if (onlyNew  && p.badge !== 'new')  return false;
+        if (onlyHit  && p.badge !== 'hit')  return false;
+        if (activeQ) {
+          const q = activeQ.toLowerCase();
+          if (!p.name.toLowerCase().includes(q) && !p.sku.toLowerCase().includes(q) && !p.brand.toLowerCase().includes(q)) return false;
+        }
+        return true;
+      });
+
+      if (sort === 'price-asc')  results.sort((a,b) => a.price - b.price);
+      if (sort === 'price-desc') results.sort((a,b) => b.price - a.price);
+      if (sort === 'rating')     results.sort((a,b) => b.rating - a.rating);
+      if (sort === 'name')       results.sort((a,b) => a.name.localeCompare(b.name,'ru'));
+
+      const grid = document.getElementById('products-grid');
+      const empty = document.getElementById('empty-state');
+      const count = document.getElementById('results-count');
+
+      count.textContent = `Найдено: ${results.length} товаров`;
+
+      if (!results.length) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        grid.innerHTML = results.map(p => renderProductCard(p)).join('');
+      }
+    }
+
+    function resetFilters() {
+      activeCat = ''; activeBrand = ''; activeQ = ''; activeBadge = '';
+      document.getElementById('cat-all').checked = true;
+      document.getElementById('brand-all').checked = true;
+      document.getElementById('price-min').value = '';
+      document.getElementById('price-max').value = '';
+      document.getElementById('f-sale').checked = false;
+      document.getElementById('f-new').checked = false;
+      document.getElementById('f-hit').checked = false;
+      document.getElementById('sort-select').value = 'default';
+      applyFilters();
+    }
+
+    applyFilters();
+  </script>
+</body>
+</html>

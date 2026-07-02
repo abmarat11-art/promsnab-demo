@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Товар — PromSnab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="main-content">
+    <div class="container" style="padding-top:24px;padding-bottom:64px">
+      <div class="breadcrumb">
+        <a onclick="nav('index.html')">Главная</a>
+        <span class="breadcrumb-sep">›</span>
+        <a onclick="nav('catalog.html')">Каталог</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current" id="bc-cat">—</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current" id="bc-name">Загрузка...</span>
+      </div>
+
+      <div id="product-content" style="margin-top:32px"></div>
+
+      <!-- RELATED -->
+      <div style="margin-top:64px">
+        <div class="section-header">
+          <div class="section-label">Также смотрят</div>
+          <h2 class="section-title">Похожие товары</h2>
+        </div>
+        <div class="grid-4" id="related-grid"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/header.js"></script>
+  <script>
+    injectShell({ page: 'product.html', title: 'Товар' });
+
+    const id = parseInt(new URLSearchParams(location.search).get('id'));
+    const p = PRODUCTS.find(x => x.id === id);
+
+    if (!p) {
+      document.getElementById('product-content').innerHTML = `<div class="empty-state"><div class="empty-state-icon">😕</div><h3>Товар не найден</h3><button class="btn btn-primary mt-4" onclick="nav('catalog.html')">Перейти в каталог</button></div>`;
+    } else {
+      document.title = p.name + ' — PromSnab';
+      document.getElementById('bc-cat').textContent = CAT_NAMES[p.category] || p.category;
+      document.getElementById('bc-name').textContent = p.name;
+
+      const specs = {
+        pumps:       [['Тип','Центробежный многоступенчатый'],['Подача','5 м³/ч'],['Напор','40 м'],['Мощность двигателя','1.1 кВт'],['Напряжение','220/380 В'],['Материал корпуса','Нержавеющая сталь AISI 304'],['Степень защиты','IP44'],['Вес','8.5 кг']],
+        compressors: [['Тип','Винтовой'],['Производительность','1800 л/мин'],['Рабочее давление','8 бар'],['Мощность','15 кВт'],['Напряжение','380 В / 50 Гц'],['Объём ресивера','90 л'],['Уровень шума','68 дБ'],['Вес','310 кг']],
+        valves:      [['Тип','Клиновая задвижка'],['DN','200 мм'],['PN','16 бар'],['Материал корпуса','Чугун GG25'],['Уплотнение','EPDM'],['Присоединение','Фланцевое'],['Стандарт','ГОСТ 5762'],['Вес','42 кг']],
+        electric:    [['Тип','Асинхронный'],['Мощность','7.5 кВт'],['Частота вращения','1500 об/мин'],['Напряжение','380 В'],['КПД','IE3 – 91%'],['Степень защиты','IP55'],['Класс изоляции','F'],['Вес','55 кг']],
+        fire:        [['Тип','Розеточный спринклер'],['Температура','68°C'],['K-фактор','80'],['Резьба','G3/4"'],['Покрытие','Хромирование'],['Давление','0.5–12 бар'],['Стандарт','EN 12259-1'],['Цвет колбы','Красный']],
+        pipes:       [['Тип','Бесшовная горячедеформированная'],['Диаметр','108 мм'],['Толщина стенки','4 мм'],['Сталь','20'],['ГОСТ','8732-78'],['Длина','6/9/12 м'],['Покрытие','Без покрытия'],['Вес 1 м','10.26 кг']],
+        lubricants:  [['Тип','Пластичная смазка'],['Загуститель','Li-комплекс'],['NLGI','2'],['Рабочий диапазон','-25°C...+120°C'],['Основа','Минеральное масло'],['Цвет','Светло-коричневый'],['Объём','18 кг'],['Стандарт','DIN 51825 KP2K-25']],
+        machines:    [['Тип','Токарно-винторезный'],['РМЦ','1000 мм'],['Высота центров','215 мм'],['Мощность','11 кВт'],['Частота вращения','12.5–1600 об/мин'],['Масса','3050 кг'],['Напряжение','380 В'],['Класс точности','Н']],
+      };
+
+      const specRows = (specs[p.category] || []).map(([k,v]) => `<div class="spec-row"><span class="spec-key">${k}</span><span class="spec-val">${v}</span></div>`).join('');
+
+      document.getElementById('product-content').innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+
+          <!-- LEFT: image + badges -->
+          <div>
+            <div class="product-detail-img">${p.emoji}</div>
+            <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+              ${badgeHtml(p.badge)}
+              <span class="badge-tag badge-new">📦 В наличии</span>
+              <span class="badge-tag" style="background:rgba(34,197,94,.1);color:var(--success)">✅ Оригинал</span>
+            </div>
+          </div>
+
+          <!-- RIGHT: info -->
+          <div>
+            <div style="font-size:12px;color:var(--primary);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">${CAT_NAMES[p.category]||p.category} · ${p.brand}</div>
+            <h1 style="font-size:28px;font-weight:800;line-height:1.2;margin-bottom:8px">${p.name}</h1>
+            <div style="font-size:12px;color:var(--text-3);font-family:monospace;margin-bottom:12px">Арт: ${p.sku}</div>
+
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <span class="stars" style="font-size:16px">${stars(p.rating)}</span>
+              <span style="font-size:14px;color:var(--text-2)">${p.rating} · ${p.reviews} отзывов</span>
+            </div>
+
+            <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:24px">${p.desc}</p>
+
+            <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r-sm);padding:20px;margin-bottom:20px">
+              <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:8px">
+                <span style="font-size:36px;font-weight:900">${fmt(p.price)}</span>
+                <span style="font-size:16px;color:var(--text-2)">сум</span>
+                ${p.old ? `<span style="font-size:14px;color:var(--text-3);text-decoration:line-through">${fmt(p.old)} сум</span>` : ''}
+              </div>
+              ${p.old ? `<div style="font-size:12px;color:var(--success)">Экономия: ${fmt(p.old-p.price)} сум (${Math.round((1-p.price/p.old)*100)}%)</div>` : ''}
+            </div>
+
+            <div style="display:flex;gap:12px;margin-bottom:16px">
+              <div style="flex:1">
+                <label class="form-label">Количество</label>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <button class="qty-btn" onclick="qtyChange(-1)">−</button>
+                  <input id="qty-input" type="number" class="form-control" value="1" min="1" style="width:60px;text-align:center">
+                  <button class="qty-btn" onclick="qtyChange(1)">+</button>
+                  <span style="font-size:13px;color:var(--text-2)">шт.</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-bottom:12px">
+              <button class="btn btn-primary btn-lg" style="flex:1" onclick="addToCartQty()">🛒 В корзину</button>
+              <button class="icon-btn fav-btn${isFav(p.id)?' active':''}" data-id="${p.id}" onclick="toggleFav(${p.id},this)" style="width:50px;height:50px" title="В избранное">♡</button>
+            </div>
+            <button class="btn btn-outline w-full" onclick="nav('contacts.html')">📋 Запросить коммерческое предложение</button>
+
+            <div style="display:flex;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+              <span style="font-size:13px;color:var(--text-2)">🚚 Доставка 1–5 дней</span>
+              <span style="font-size:13px;color:var(--text-2)">📜 Официальная гарантия</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABS: specs / reviews -->
+        <div style="margin-top:48px">
+          <div class="tabs">
+            <div class="tab active" onclick="switchTab('specs',this)">Характеристики</div>
+            <div class="tab" onclick="switchTab('docs',this)">Документы</div>
+            <div class="tab" onclick="switchTab('reviews',this)">Отзывы (${p.reviews})</div>
+          </div>
+          <div id="tab-specs">
+            ${specRows || '<p style="color:var(--text-2)">Характеристики уточняются</p>'}
+          </div>
+          <div id="tab-docs" class="hidden">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="card card-body flex gap-3" style="cursor:pointer" onclick="toast('info','Скачивание началось...')">
+                <span style="font-size:24px">📄</span>
+                <div><div style="font-weight:600;font-size:14px">Техническое описание ${p.name}</div><div style="font-size:12px;color:var(--text-2)">PDF, 2.4 МБ</div></div>
+              </div>
+              <div class="card card-body flex gap-3" style="cursor:pointer" onclick="toast('info','Скачивание началось...')">
+                <span style="font-size:24px">📋</span>
+                <div><div style="font-weight:600;font-size:14px">Сертификат соответствия</div><div style="font-size:12px;color:var(--text-2)">PDF, 0.8 МБ</div></div>
+              </div>
+            </div>
+          </div>
+          <div id="tab-reviews" class="hidden">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="review-card"><div style="display:flex;justify-content:space-between"><div><div class="review-author">Александр М.</div><div class="review-date">12 мая 2026</div></div><span class="stars">★★★★★</span></div><p class="review-text">Отличное оборудование, соответствует заявленным характеристикам. Доставка пришла быстро, упаковка надёжная. Рекомендую!</p></div>
+              <div class="review-card"><div style="display:flex;justify-content:space-between"><div><div class="review-author">ООО «ТехСтрой»</div><div class="review-date">3 апреля 2026</div></div><span class="stars">★★★★☆</span></div><p class="review-text">Работаем с PromSnab уже 3 года. Качество продукции стабильное, менеджеры всегда на связи. Единственное — хотелось бы скидку за объём.</p></div>
+              <div class="review-card"><div style="display:flex;justify-content:space-between"><div><div class="review-author">Бехруз К.</div><div class="review-date">18 марта 2026</div></div><span class="stars">★★★★★</span></div><p class="review-text">Брал для промышленного объекта. Работает без нареканий уже 6 месяцев. Сервис на высоте.</p></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Related products
+    const related = p ? PRODUCTS.filter(x => x.id !== p.id && x.category === p.category).slice(0,4) : PRODUCTS.slice(0,4);
+    document.getElementById('related-grid').innerHTML = related.map(r => renderProductCard(r)).join('');
+
+    function switchTab(name, el) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      ['specs','docs','reviews'].forEach(t => document.getElementById('tab-'+t)?.classList.toggle('hidden', t !== name));
+    }
+
+    function qtyChange(d) {
+      const inp = document.getElementById('qty-input');
+      inp.value = Math.max(1, parseInt(inp.value||1) + d);
+    }
+
+    function addToCartQty() {
+      const qty = parseInt(document.getElementById('qty-input')?.value||1);
+      for (let i=0;i<qty;i++) addToCart(p.id);
+      // fix: don't add qty times, set directly
+      const existing = state.cart.find(x=>x.id===p.id);
+      if (existing) { existing.qty = qty; saveCart(); renderCartBadge(); renderCart(); }
+      toast('success', `${p.name} × ${qty} добавлен в корзину`);
+    }
+  </script>
+</body>
+</html>

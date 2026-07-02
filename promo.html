@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Акции — PromSnab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="main-content">
+    <section class="section" style="padding-top:40px">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Специальные предложения</div>
+          <h1 class="section-title">Акции и скидки</h1>
+        </div>
+
+        <!-- Promo banners -->
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:40px">
+          <div style="background:linear-gradient(135deg,#0D1117 0%,#1C2333 100%);border:1px solid var(--border-hi);border-radius:var(--r-lg);padding:36px 40px;position:relative;overflow:hidden">
+            <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(6,182,212,.15),transparent 70%);pointer-events:none"></div>
+            <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Горячее предложение</div>
+            <h2 style="font-size:28px;font-weight:900;margin-bottom:10px">Скидки до 25%<br>на насосное оборудование</h2>
+            <p style="color:var(--text-2);margin-bottom:24px;font-size:14px">Grundfos, Pedrollo, Wilo — ограниченное количество на складе</p>
+            <div style="display:flex;align-items:center;gap:16px">
+              <button class="btn btn-primary btn-lg" onclick="nav('catalog.html?cat=pumps')">Смотреть товары →</button>
+              <div style="font-size:13px;color:var(--text-3)">До 31 июля</div>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#1C1008,#2D1F0A);border:1px solid rgba(249,115,22,.25);border-radius:var(--r-lg);padding:28px;display:flex;flex-direction:column;justify-content:space-between">
+            <div>
+              <div style="font-size:11px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Новинки</div>
+              <h3 style="font-size:20px;font-weight:800;margin-bottom:8px">Частотные преобразователи ABB</h3>
+              <p style="font-size:13px;color:var(--text-2)">Расширение склада — цены производителя</p>
+            </div>
+            <button class="btn btn-outline" style="border-color:var(--accent);color:var(--accent)" onclick="nav('catalog.html?brand=ABB')">Подробнее →</button>
+          </div>
+        </div>
+
+        <!-- Sale products -->
+        <div class="flex-between section-header">
+          <div>
+            <div class="section-label">Со скидкой</div>
+            <h2 class="section-title">Товары по акции</h2>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="badge-tag badge-sale" style="font-size:13px;padding:6px 14px;cursor:default">−15% и более</button>
+          </div>
+        </div>
+        <div class="grid-4" id="promo-grid"></div>
+
+        <!-- Coupon block -->
+        <div style="margin-top:52px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px 36px;display:flex;align-items:center;gap:32px">
+          <div style="font-size:40px">🎁</div>
+          <div style="flex:1">
+            <div style="font-size:18px;font-weight:800;margin-bottom:6px">Промокод на первый заказ</div>
+            <div style="font-size:14px;color:var(--text-2)">Получите скидку 5% на первый заказ от 100 000 сум. Введите код при оформлении.</div>
+          </div>
+          <div style="text-align:center;flex-shrink:0">
+            <div style="font-size:22px;font-weight:900;letter-spacing:.1em;color:var(--primary);background:var(--bg-3);border:2px dashed var(--border-hi);border-radius:var(--r);padding:10px 22px;margin-bottom:8px">FIRST5</div>
+            <div style="font-size:12px;color:var(--text-3)">Действует до конца месяца</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/header.js"></script>
+  <script>
+    injectShell({ page: 'promo.html', title: 'Акции' });
+    const saleProducts = PRODUCTS.filter(p => p.badge === 'sale' || p.old);
+    document.getElementById('promo-grid').innerHTML = saleProducts.map(p => renderProductCard(p)).join('');
+  </script>
+</body>
+</html>

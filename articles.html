@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статьи — PromSnab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .article-card {
+      background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r-lg);
+      overflow: hidden; cursor: pointer; transition: all var(--t); display: flex; flex-direction: column;
+    }
+    .article-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .article-img {
+      height: 160px; background: var(--bg-3); display: flex; align-items: center;
+      justify-content: center; font-size: 64px; border-bottom: 1px solid var(--border);
+    }
+    .article-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .article-tag { font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: .08em; }
+    .article-title { font-size: 15px; font-weight: 700; line-height: 1.4; }
+    .article-excerpt { font-size: 13px; color: var(--text-2); line-height: 1.65; flex: 1; }
+    .article-meta { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-3); padding-top: 12px; border-top: 1px solid var(--border); }
+    .article-modal-body { max-height: 60vh; overflow-y: auto; }
+    .article-modal-body p { margin-bottom: 14px; font-size: 14px; color: var(--text-2); line-height: 1.8; }
+    .article-modal-body h3 { font-size: 16px; font-weight: 700; margin: 20px 0 8px; }
+  </style>
+</head>
+<body>
+  <main id="main-content">
+    <section class="section" style="padding-top:40px">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Полезные материалы</div>
+          <h1 class="section-title">Статьи и руководства</h1>
+        </div>
+        <div class="article-grid" id="articles-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="article-modal" onclick="if(event.target===this)closeArticle()">
+    <div class="modal-box" style="max-width:680px">
+      <div class="modal-header">
+        <div class="modal-title" id="article-modal-title"></div>
+        <button class="modal-close icon-btn" onclick="closeArticle()">✕</button>
+      </div>
+      <div class="modal-body article-modal-body" id="article-modal-body"></div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/header.js"></script>
+  <script>
+    injectShell({ page: 'articles.html', title: 'Статьи' });
+
+    const ARTICLES = [
+      {
+        emoji: '💧', tag: 'Насосы', date: '15 июня 2026', views: 1240,
+        title: 'Как выбрать центробежный насос для системы водоснабжения',
+        excerpt: 'Разбираем ключевые параметры: производительность, напор, тип уплотнения. Практические советы по подбору от инженеров PromSnab.',
+        content: `<h3>Основные параметры выбора</h3><p>При выборе центробежного насоса необходимо учитывать три ключевых параметра: производительность (м³/ч), напор (метры водяного столба) и тип перекачиваемой среды.</p><h3>Производительность</h3><p>Производительность определяется потребностями системы. Для жилых домов: 1.5–3 м³/ч на семью из 4 человек. Для промышленных нужд расчёт ведётся исходя из технологического процесса.</p><h3>Напор</h3><p>Напор должен преодолевать сопротивление трубопровода и высоту подъёма. Формула: H = Hz + Hf, где Hz — геометрическая высота, Hf — потери на трение.</p><p>Рекомендуем обратиться к инженерам PromSnab для точного подбора оборудования по вашим параметрам.</p>`
+      },
+      {
+        emoji: '🔧', tag: 'Компрессоры', date: '3 июня 2026', views: 876,
+        title: 'Винтовые компрессоры Atlas Copco: техническое обслуживание',
+        excerpt: 'Периодичность замены масла, фильтров и расходников. Что можно сделать самостоятельно, а что требует сервисного инженера.',
+        content: `<h3>Регламентное ТО</h3><p>Первое ТО проводится через 500 часов работы, далее — каждые 2000 часов или раз в год. В рамках ТО меняются масляный, воздушный и масляный сепаратор.</p><h3>Замена масла</h3><p>Используйте только оригинальное масло Roto-Inject Fluid. Замена через 4000 часов или 2 года. Несоблюдение требований ведёт к потере гарантии.</p><h3>Что можно делать самому</h3><p>Ежедневная проверка уровня масла, визуальный осмотр, продувка воздушного фильтра — это выполняется персоналом предприятия. Замена расходников и сервис — только авторизованным центром.</p>`
+      },
+      {
+        emoji: '⚡', tag: 'Электрооборудование', date: '22 мая 2026', views: 654,
+        title: 'Частотные преобразователи: экономия электроэнергии до 40%',
+        excerpt: 'Как установка VFD на насосы и вентиляторы окупается за 12–18 месяцев и снижает энергопотребление.',
+        content: `<h3>Принцип работы</h3><p>Частотный преобразователь (VFD) регулирует скорость двигателя в зависимости от нагрузки. При снижении скорости на 20% потребление энергии падает на 49% (закон кубической зависимости).</p><h3>Типичная окупаемость</h3><p>На насосной установке мощностью 22 кВт при среднесуточной загрузке 70%: экономия ~35 000 кВт·ч в год, или около 5,6 млн сум. Стоимость VFD ABB 22 кВт — 185 000 сум. Окупаемость — 12 месяцев.</p>`
+      },
+      {
+        emoji: '🔩', tag: 'Арматура', date: '10 мая 2026', views: 432,
+        title: 'Задвижки vs шаровые краны: что выбрать для трубопровода?',
+        excerpt: 'Сравниваем типы запорной арматуры по давлению, температуре, частоте открытия и стоимости владения.',
+        content: `<h3>Задвижки</h3><p>Применяются в системах с редкими переключениями (менее 2 раз в сутки), высоким давлением (PN10–PN100) и большими диаметрами DN150–DN1000. Основное преимущество — минимальное гидравлическое сопротивление в открытом состоянии.</p><h3>Шаровые краны</h3><p>Оптимальны для частых переключений, малых и средних диаметров DN15–DN150. Быстрое закрытие (90°), компактность, герметичность класса А. Недостаток — гидроудар при быстром закрытии.</p>`
+      },
+      {
+        emoji: '🛢️', tag: 'Смазочные', date: '28 апреля 2026', views: 318,
+        title: 'Правильный выбор пластичной смазки для подшипников',
+        excerpt: 'Классы NLGI, температурные диапазоны, совместимость загустителей. Ошибки, которые приводят к преждевременному износу.',
+        content: `<h3>Классы NLGI</h3><p>NLGI 0–1: жидкие смазки для систем централизованной подачи. NLGI 2: универсальный класс для большинства подшипников. NLGI 3: густые смазки для вертикальных подшипников и вибронагруженных узлов.</p><h3>Совместимость загустителей</h3><p>Нельзя смешивать литиевые и кальциевые смазки — образуется жидкая масса без смазочных свойств. При смене типа смазки — полная промывка подшипника.</p>`
+      },
+      {
+        emoji: '⚙️', tag: 'Станки', date: '15 апреля 2026', views: 285,
+        title: 'Токарный станок 16К20: настройка и эксплуатация',
+        excerpt: 'Пошаговое руководство по выставлению центров, выбору режимов резания и уходу за направляющими.',
+        content: `<h3>Настройка центров</h3><p>Совпадение осей переднего и заднего центров проверяется индикатором. Допуск — не более 0.01 мм на длине 300 мм. Регулировка — смещением пиноли задней бабки.</p><h3>Выбор режимов резания</h3><p>Для стали 45: скорость резания 80–120 м/мин, подача 0.1–0.3 мм/об, глубина 1–3 мм при черновой обработке. Используйте СОЖ для увеличения стойкости инструмента.</p>`
+      },
+    ];
+
+    function openArticle(i) {
+      const a = ARTICLES[i];
+      document.getElementById('article-modal-title').textContent = a.title;
+      document.getElementById('article-modal-body').innerHTML = a.content;
+      document.getElementById('article-modal').classList.add('open');
+    }
+    function closeArticle() { document.getElementById('article-modal').classList.remove('open'); }
+
+    document.getElementById('articles-grid').innerHTML = ARTICLES.map((a, i) => `
+      <div class="article-card" onclick="openArticle(${i})">
+        <div class="article-img">${a.emoji}</div>
+        <div class="article-body">
+          <div class="article-tag">${a.tag}</div>
+          <div class="article-title">${a.title}</div>
+          <div class="article-excerpt">${a.excerpt}</div>
+          <div class="article-meta">
+            <span>${a.date}</span>
+            <span>👁 ${a.views.toLocaleString('ru-RU')}</span>
+          </div>
+        </div>
+      </div>`).join('');
+  </script>
+</body>
+</html>

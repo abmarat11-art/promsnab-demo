@@ -119,12 +119,130 @@ function closeCart() {
 
 // ─── FAVORITES ───────────────────────────────────────────────────────────────
 function toggleFav(id, btn) {
-  if (state.favs.has(id)) { state.favs.delete(id); if(btn) btn.classList.remove('active'); }
-  else { state.favs.add(id); if(btn) btn.classList.add('active'); toast('info','Добавлено в избранное'); }
+  if (state.favs.has(id)) { state.favs.delete(id); if(btn) btn.classList.remove('active'); toast('info', t('fav.removed')); }
+  else { state.favs.add(id); if(btn) btn.classList.add('active'); toast('info', t('fav.added')); }
   saveFavs();
+  renderFavBadge();
   document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(b => b.classList.toggle('active', state.favs.has(id)));
 }
 function isFav(id) { return state.favs.has(id); }
+
+function renderFavBadge() {
+  const count = state.favs.size;
+  document.querySelectorAll('.fav-badge').forEach(el => {
+    el.textContent = count;
+    el.style.display = count ? '' : 'none';
+  });
+}
+
+function renderFavs() {
+  const list = document.getElementById('favs-items');
+  if (!list) return;
+  const items = [...state.favs].map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+  if (!items.length) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">♡</div><h3>${t('fav.empty')}</h3><p>${t('fav.emptySub')}</p></div>`;
+    return;
+  }
+  list.innerHTML = items.map(p => `<div class="cart-item">
+    <div class="cart-item-img">${p.emoji}</div>
+    <div style="flex:1;min-width:0">
+      <div class="cart-item-name">${p.name}</div>
+      <div class="cart-item-price">${fmt(p.price)} ${t('currency')}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+      <button class="btn btn-sm btn-primary" onclick="addToCart(${p.id});closeFavs()">${t('btn.toCart')}</button>
+      <button class="btn btn-sm btn-danger" onclick="toggleFav(${p.id})">✕</button>
+    </div>
+  </div>`).join('');
+}
+
+function openFavs() {
+  renderFavs();
+  document.getElementById('favs-overlay')?.classList.add('open');
+}
+function closeFavs() {
+  document.getElementById('favs-overlay')?.classList.remove('open');
+}
+
+// ─── QUICK VIEW ──────────────────────────────────────────────────────────────
+function openQuickView(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('qv-name').textContent = p.name;
+  document.getElementById('qv-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start">
+      <div style="background:var(--bg-3);border-radius:var(--r-lg);aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:72px">${p.emoji}</div>
+      <div>
+        <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">${CAT_NAMES[p.category]||p.category} · ${p.brand}</div>
+        <div style="font-size:13px;color:var(--text-2);margin-bottom:4px">Арт: ${p.sku}</div>
+        <div style="margin-bottom:12px"><span style="color:#F59E0B">${stars(p.rating)}</span> <span style="color:var(--text-2);font-size:13px">${p.rating} (${p.reviews} ${t('reviews')})</span></div>
+        <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:20px">${p.desc}</p>
+        <div style="margin-bottom:20px">
+          <div style="font-size:26px;font-weight:900;color:var(--primary)">${fmt(p.price)} <small style="font-size:14px;font-weight:500">${t('currency')}</small></div>
+          ${p.old?`<div style="color:var(--text-3);text-decoration:line-through;font-size:14px">${fmt(p.old)} ${t('currency')}</div>`:''}
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-primary w-full" onclick="addToCart(${p.id});closeQuickView()">${t('btn.toCart')}</button>
+          <button class="btn btn-outline fav-btn${isFav(p.id)?' active':''}" data-id="${p.id}" onclick="toggleFav(${p.id},this)" style="flex-shrink:0;width:44px">♡</button>
+        </div>
+        <button class="btn btn-outline w-full" style="margin-top:10px" onclick="closeQuickView();nav('product.html?id=${p.id}')">${t('btn.details')}</button>
+      </div>
+    </div>`;
+  document.getElementById('quickview-modal')?.classList.add('open');
+}
+function closeQuickView() { document.getElementById('quickview-modal')?.classList.remove('open'); }
+
+// ─── CALLBACK ────────────────────────────────────────────────────────────────
+function openCallback() { document.getElementById('callback-modal')?.classList.add('open'); }
+function closeCallback() { document.getElementById('callback-modal')?.classList.remove('open'); }
+function submitCallback(e) {
+  e.preventDefault();
+  closeCallback();
+  toast('success', t('callback.sent'));
+}
+
+// ─── LANGUAGE ─────────────────────────────────────────────────────────────────
+const TRANSLATIONS = {
+  ru: {
+    'nav.home':'Главная','nav.catalog':'Каталог','nav.promo':'Акции','nav.delivery':'Доставка',
+    'nav.gallery':'Галерея','nav.articles':'Статьи','nav.about':'О компании','nav.contacts':'Контакты',
+    'favs.title':'Избранное','fav.added':'Добавлено в избранное','fav.removed':'Удалено из избранного',
+    'fav.empty':'Избранное пусто','fav.emptySub':'Добавляйте товары кнопкой ♡',
+    'btn.toCart':'+ В корзину','btn.cancel':'Отмена','btn.details':'Подробнее →',
+    'callback.title':'Обратный звонок','callback.sub':'Оставьте номер — менеджер перезвонит в течение 15 минут',
+    'callback.name':'Имя','callback.phone':'Телефон *','callback.time':'Удобное время',
+    'callback.submit':'Перезвоните мне →','callback.sent':'Заявка принята! Перезвоним скоро.',
+    'currency':'сум','reviews':'отзывов',
+  },
+  uz: {
+    'nav.home':'Bosh sahifa','nav.catalog':'Katalog','nav.promo':'Aksiyalar','nav.delivery':'Yetkazib berish',
+    'nav.gallery':'Fotogalereya','nav.articles':'Maqolalar','nav.about':'Biz haqimizda','nav.contacts':'Bog\'lanish',
+    'favs.title':'Tanlanganlar','fav.added':'Tanlanganlarga qo\'shildi','fav.removed':'Tanlanganlarga o\'chirildi',
+    'fav.empty':'Tanlanganlar bo\'sh','fav.emptySub':'♡ tugmasi orqali mahsulot qo\'shing',
+    'btn.toCart':'+ Savatga','btn.cancel':'Bekor qilish','btn.details':'Batafsil →',
+    'callback.title':'Qayta qo\'ng\'iroq','callback.sub':'Raqamingizni qoldiring — menejer 15 daqiqada qo\'ng\'iroq qiladi',
+    'callback.name':'Ism','callback.phone':'Telefon *','callback.time':'Qulay vaqt',
+    'callback.submit':'Menga qo\'ng\'iroq qiling →','callback.sent':'Ariza qabul qilindi! Tez orada qo\'ng\'iroq qilamiz.',
+    'currency':'so\'m','reviews':'sharh',
+  },
+};
+
+let currentLang = localStorage.getItem('ps-lang') || 'ru';
+
+function t(key) { return (TRANSLATIONS[currentLang]||TRANSLATIONS.ru)[key] || key; }
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('ps-lang', lang);
+  const btn = document.getElementById('lang-toggle-btn');
+  if (btn) btn.textContent = lang === 'ru' ? 'UZ' : 'RU';
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) el.textContent = TRANSLATIONS[lang][key];
+  });
+}
+
+function toggleLang() { applyLang(currentLang === 'ru' ? 'uz' : 'ru'); }
 
 // ─── DASHBOARD ───────────────────────────────────────────────────────────────
 function openDash() {
@@ -168,6 +286,7 @@ function renderProductCard(p, link=true) {
       <div class="product-badges">${badgeHtml(p.badge)}</div>
       <div class="product-actions-hover">
         <button class="p-action-btn fav-btn${isFav(p.id)?' active':''}" data-id="${p.id}" onclick="event.stopPropagation();toggleFav(${p.id},this)" title="В избранное">♡</button>
+        <button class="p-action-btn" onclick="event.stopPropagation();openQuickView(${p.id})" title="Быстрый просмотр">👁</button>
         <button class="p-action-btn" onclick="event.stopPropagation();addToCart(${p.id})" title="В корзину">🛒</button>
       </div>
     </div>
@@ -218,6 +337,8 @@ function submitOrder(e) {
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   renderCartBadge();
+  renderFavBadge();
+  applyLang(currentLang);
 
   // Logo click → dashboard
   document.querySelector('.logo')?.addEventListener('click', openDash);

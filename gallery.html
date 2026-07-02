@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Фотогалерея — PromSnab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .gallery-item {
+      aspect-ratio: 1; background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden; cursor: pointer; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px; transition: all var(--t);
+    }
+    .gallery-item:hover { border-color: var(--primary); transform: scale(1.02); }
+    .gallery-item-label {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 12px;
+      background: linear-gradient(transparent, rgba(0,0,0,.7));
+      font-size: 12px; font-weight: 600; color: #fff; opacity: 0; transition: opacity var(--t);
+    }
+    .gallery-item:hover .gallery-item-label { opacity: 1; }
+    .gallery-item.wide { grid-column: span 2; aspect-ratio: 2; }
+    .gallery-lightbox {
+      position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.92);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .gallery-lightbox.open { opacity: 1; pointer-events: all; }
+    .gallery-lightbox-inner { text-align: center; }
+    .gallery-lightbox-emoji { font-size: 140px; display: block; margin-bottom: 16px; }
+    .gallery-lightbox-caption { font-size: 18px; font-weight: 700; color: #fff; }
+    .gallery-lightbox-close { position: absolute; top: 24px; right: 28px; font-size: 28px; color: #fff; cursor: pointer; opacity: .6; }
+    .gallery-lightbox-close:hover { opacity: 1; }
+    .gallery-tabs { display: flex; gap: 8px; margin-bottom: 28px; }
+    .gallery-tab { padding: 7px 18px; border-radius: var(--r-sm); font-size: 13px; font-weight: 600; cursor: pointer; background: var(--bg-3); border: 1px solid var(--border); color: var(--text-2); transition: all var(--t); }
+    .gallery-tab.active { background: var(--primary-g); border-color: var(--primary); color: var(--primary); }
+  </style>
+</head>
+<body>
+  <main id="main-content">
+    <section class="section" style="padding-top:40px">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Фотоматериалы</div>
+          <h1 class="section-title">Фотогалерея</h1>
+          <p style="color:var(--text-2);margin-top:8px">Наш склад, оборудование, объекты и команда</p>
+        </div>
+
+        <div class="gallery-tabs">
+          <div class="gallery-tab active" onclick="filterGallery('all',this)">Все</div>
+          <div class="gallery-tab" onclick="filterGallery('warehouse',this)">Склад</div>
+          <div class="gallery-tab" onclick="filterGallery('equipment',this)">Оборудование</div>
+          <div class="gallery-tab" onclick="filterGallery('objects',this)">Объекты</div>
+          <div class="gallery-tab" onclick="filterGallery('team',this)">Команда</div>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="gallery-lightbox" id="lightbox" onclick="closeLightbox()">
+    <div class="gallery-lightbox-close" onclick="closeLightbox()">✕</div>
+    <div class="gallery-lightbox-inner">
+      <span class="gallery-lightbox-emoji" id="lb-emoji"></span>
+      <div class="gallery-lightbox-caption" id="lb-caption"></div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/header.js"></script>
+  <script>
+    injectShell({ page: 'gallery.html', title: 'Фотогалерея' });
+
+    const GALLERY = [
+      { emoji:'🏭', label:'Главный склад, корпус А', tag:'warehouse', wide:true },
+      { emoji:'💧', label:'Насосное оборудование Grundfos', tag:'equipment' },
+      { emoji:'🔧', label:'Компрессорный цех', tag:'equipment' },
+      { emoji:'📦', label:'Зона приёмки товаров', tag:'warehouse' },
+      { emoji:'⚡', label:'Электрооборудование Siemens', tag:'equipment', wide:true },
+      { emoji:'🏗️', label:'Объект: ТЭС Навои', tag:'objects' },
+      { emoji:'🤝', label:'Встреча с клиентом Atlas Copco', tag:'team' },
+      { emoji:'🔩', label:'Арматура DN200-500', tag:'equipment' },
+      { emoji:'🏢', label:'Офис и шоурум', tag:'objects', wide:true },
+      { emoji:'👷', label:'Монтажная бригада на объекте', tag:'team' },
+      { emoji:'🚚', label:'Собственный автопарк', tag:'warehouse' },
+      { emoji:'📊', label:'Сертификация Grundfos 2024', tag:'team' },
+    ];
+
+    let currentFilter = 'all';
+
+    function renderGallery(filter) {
+      const items = filter === 'all' ? GALLERY : GALLERY.filter(g => g.tag === filter);
+      document.getElementById('gallery-grid').innerHTML = items.map((g,i) =>
+        `<div class="gallery-item${g.wide?' wide':''}" onclick="openLightbox('${g.emoji}','${g.label}')">
+          ${g.emoji}
+          <div class="gallery-item-label">${g.label}</div>
+        </div>`
+      ).join('');
+    }
+
+    function filterGallery(tag, el) {
+      currentFilter = tag;
+      document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      renderGallery(tag);
+    }
+
+    function openLightbox(emoji, caption) {
+      document.getElementById('lb-emoji').textContent = emoji;
+      document.getElementById('lb-caption').textContent = caption;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+    renderGallery('all');
+  </script>
+</body>
+</html>

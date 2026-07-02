@@ -13,11 +13,14 @@ function injectShell({ page = '', title = '' } = {}) {
         </div>
       </div>
       <nav class="nav">
-        <a class="nav-link" data-page="index.html" href="index.html" onclick="event.preventDefault();nav('index.html')">Главная</a>
-        <a class="nav-link" data-page="catalog.html" href="catalog.html" onclick="event.preventDefault();nav('catalog.html')">Каталог</a>
-        <a class="nav-link" data-page="about.html" href="about.html" onclick="event.preventDefault();nav('about.html')">О компании</a>
-        <a class="nav-link" data-page="contacts.html" href="contacts.html" onclick="event.preventDefault();nav('contacts.html')">Контакты</a>
-        <a class="nav-link" data-page="orders.html" href="orders.html" onclick="event.preventDefault();nav('orders.html')">Заказы</a>
+        <a class="nav-link" data-page="index.html" href="index.html" onclick="event.preventDefault();nav('index.html')" data-i18n="nav.home">Главная</a>
+        <a class="nav-link" data-page="catalog.html" href="catalog.html" onclick="event.preventDefault();nav('catalog.html')" data-i18n="nav.catalog">Каталог</a>
+        <a class="nav-link" data-page="promo.html" href="promo.html" onclick="event.preventDefault();nav('promo.html')" data-i18n="nav.promo">Акции</a>
+        <a class="nav-link" data-page="delivery.html" href="delivery.html" onclick="event.preventDefault();nav('delivery.html')" data-i18n="nav.delivery">Доставка</a>
+        <a class="nav-link" data-page="gallery.html" href="gallery.html" onclick="event.preventDefault();nav('gallery.html')" data-i18n="nav.gallery">Галерея</a>
+        <a class="nav-link" data-page="articles.html" href="articles.html" onclick="event.preventDefault();nav('articles.html')" data-i18n="nav.articles">Статьи</a>
+        <a class="nav-link" data-page="about.html" href="about.html" onclick="event.preventDefault();nav('about.html')" data-i18n="nav.about">О компании</a>
+        <a class="nav-link" data-page="contacts.html" href="contacts.html" onclick="event.preventDefault();nav('contacts.html')" data-i18n="nav.contacts">Контакты</a>
       </nav>
       <div class="header-search">
         <svg id="header-search-btn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="cursor:pointer">
@@ -26,11 +29,15 @@ function injectShell({ page = '', title = '' } = {}) {
         <input id="header-search" placeholder="Поиск товаров..." autocomplete="off"/>
       </div>
       <div class="header-actions">
+        <button class="lang-toggle" id="lang-toggle-btn" onclick="toggleLang()" title="Язык / Til">RU</button>
         <button class="theme-toggle" id="theme-toggle-btn" title="Переключить тему" onclick="toggleTheme()">🌙</button>
+        <button class="icon-btn" onclick="openFavs()" title="Избранное">
+          ♡<span class="badge fav-badge" style="display:none">0</span>
+        </button>
         <button class="icon-btn" onclick="openCart()" title="Корзина">
           🛒<span class="badge cart-badge" style="display:none">0</span>
         </button>
-        <button class="icon-btn" onclick="nav('contacts.html')" title="Связаться">📞</button>
+        <button class="icon-btn" onclick="openCallback()" title="Обратный звонок">📞</button>
       </div>
     </div>
   </header>`;
@@ -182,9 +189,12 @@ function injectShell({ page = '', title = '' } = {}) {
           <div class="footer-heading">Компания</div>
           <div class="footer-links">
             <a class="footer-link" onclick="nav('about.html')">О компании</a>
-            <a class="footer-link" onclick="nav('about.html#brands')">Наши бренды</a>
+            <a class="footer-link" onclick="nav('promo.html')">Акции</a>
+            <a class="footer-link" onclick="nav('gallery.html')">Фотогалерея</a>
+            <a class="footer-link" onclick="nav('articles.html')">Статьи</a>
+            <a class="footer-link" onclick="nav('delivery.html')">Оплата и доставка</a>
+            <a class="footer-link" onclick="nav('documents.html')">Документы</a>
             <a class="footer-link" onclick="nav('orders.html')">Отслеживание заказа</a>
-            <a class="footer-link" onclick="nav('contacts.html')">Контакты</a>
           </div>
         </div>
         <div>
@@ -209,13 +219,66 @@ function injectShell({ page = '', title = '' } = {}) {
 
   const toastContainer = `<div id="toast-container"></div>`;
 
+  const favsPanel = `
+  <div class="cart-overlay" id="favs-overlay" onclick="if(event.target===this)closeFavs()">
+    <aside class="cart-panel">
+      <div class="cart-header">
+        <div style="font-size:16px;font-weight:700" data-i18n="favs.title">Избранное</div>
+        <button class="icon-btn" onclick="closeFavs()">✕</button>
+      </div>
+      <div class="cart-items" id="favs-items"></div>
+    </aside>
+  </div>`;
+
+  const quickViewModal = `
+  <div class="modal-overlay" id="quickview-modal" onclick="if(event.target===this)closeQuickView()">
+    <div class="modal-box" style="max-width:640px">
+      <div class="modal-header">
+        <div class="modal-title" id="qv-name">Товар</div>
+        <button class="modal-close icon-btn" onclick="closeQuickView()">✕</button>
+      </div>
+      <div class="modal-body" id="qv-body"></div>
+    </div>
+  </div>`;
+
+  const callbackModal = `
+  <div class="modal-overlay" id="callback-modal" onclick="if(event.target===this)closeCallback()">
+    <div class="modal-box" style="max-width:440px">
+      <div class="modal-header">
+        <div class="modal-title" data-i18n="callback.title">Обратный звонок</div>
+        <button class="modal-close icon-btn" onclick="closeCallback()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:14px;color:var(--text-2);margin-bottom:20px" data-i18n="callback.sub">Оставьте номер — менеджер перезвонит в течение 15 минут</p>
+        <form onsubmit="submitCallback(event)">
+          <div class="form-group"><label class="form-label" data-i18n="callback.name">Имя</label><input class="form-control" required placeholder="Ваше имя"></div>
+          <div class="form-group"><label class="form-label" data-i18n="callback.phone">Телефон *</label><input class="form-control" required placeholder="+998 XX XXX-XX-XX"></div>
+          <div class="form-group">
+            <label class="form-label" data-i18n="callback.time">Удобное время</label>
+            <select class="form-control">
+              <option>9:00 – 12:00</option><option>12:00 – 15:00</option><option>15:00 – 18:00</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:8px">
+            <button type="button" class="btn btn-outline w-full" onclick="closeCallback()" data-i18n="btn.cancel">Отмена</button>
+            <button type="submit" class="btn btn-primary w-full" data-i18n="callback.submit">Перезвоните мне →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+
   // Inject before body close
-  document.body.insertAdjacentHTML('afterbegin', header + dashboard + cart + checkoutModal);
+  document.body.insertAdjacentHTML('afterbegin', header + dashboard + cart + checkoutModal + favsPanel + quickViewModal + callbackModal);
   document.body.insertAdjacentHTML('beforeend', footer + toastContainer);
 
   // Init theme from saved preference
   const saved = localStorage.getItem('ps-theme') || 'dark';
   applyTheme(saved);
+
+  // Init language
+  const savedLang = localStorage.getItem('ps-lang') || 'ru';
+  if (typeof applyLang === 'function') applyLang(savedLang);
 }
 
 function applyTheme(theme) {

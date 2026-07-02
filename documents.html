@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Документы — PromSnab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .doc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .doc-card {
+      background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r-lg);
+      padding: 22px; display: flex; align-items: flex-start; gap: 16px; cursor: pointer;
+      transition: all var(--t);
+    }
+    .doc-card:hover { border-color: var(--primary); background: var(--primary-g); }
+    .doc-icon { font-size: 32px; flex-shrink: 0; line-height: 1; }
+    .doc-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .doc-meta { font-size: 12px; color: var(--text-3); }
+    .doc-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .05em; }
+    .doc-tag.pdf  { background: rgba(239,68,68,.12); color: #F87171; }
+    .doc-tag.cert { background: rgba(34,197,94,.12); color: #4ADE80; }
+    .doc-tag.doc  { background: rgba(99,102,241,.12); color: #A5B4FC; }
+    .doc-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; color: var(--text-3); margin: 28px 0 14px; }
+  </style>
+</head>
+<body>
+  <main id="main-content">
+    <section class="section" style="padding-top:40px">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Юридические и технические</div>
+          <h1 class="section-title">Документы</h1>
+          <p style="color:var(--text-2);margin-top:8px">Сертификаты, договоры, технические паспорта и прайс-листы</p>
+        </div>
+
+        <div style="background:var(--bg-2);border:1px solid var(--border-hi);border-radius:var(--r-lg);padding:18px 24px;display:flex;align-items:center;gap:16px;margin-bottom:32px">
+          <div style="font-size:24px">ℹ️</div>
+          <div style="font-size:13px;color:var(--text-2)">Документы предоставлены в ознакомительных целях. Для получения оригиналов и нотариально заверенных копий обратитесь к менеджеру.</div>
+        </div>
+
+        <div class="doc-section-title">Сертификаты и лицензии</div>
+        <div class="doc-grid">
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">📜</div>
+            <div>
+              <div class="doc-tag cert">Сертификат</div>
+              <div class="doc-name">Дистрибьюторское соглашение Grundfos</div>
+              <div class="doc-meta">PDF · 1.2 МБ · Обновлён 01.01.2026</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">📜</div>
+            <div>
+              <div class="doc-tag cert">Сертификат</div>
+              <div class="doc-name">Дистрибьюторское соглашение Atlas Copco</div>
+              <div class="doc-meta">PDF · 980 КБ · Обновлён 01.03.2026</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">🏅</div>
+            <div>
+              <div class="doc-tag cert">Сертификат</div>
+              <div class="doc-name">ISO 9001:2015 — Система менеджмента качества</div>
+              <div class="doc-meta">PDF · 450 КБ · Действителен до 2027</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">📋</div>
+            <div>
+              <div class="doc-tag cert">Лицензия</div>
+              <div class="doc-name">Свидетельство о государственной регистрации</div>
+              <div class="doc-meta">PDF · 320 КБ</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">✅</div>
+            <div>
+              <div class="doc-tag cert">Авторизация</div>
+              <div class="doc-name">Авторизованный дилер Siemens Узбекистан</div>
+              <div class="doc-meta">PDF · 560 КБ · 2026</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">✅</div>
+            <div>
+              <div class="doc-tag cert">Авторизация</div>
+              <div class="doc-name">Авторизованный дилер ABB Узбекистан</div>
+              <div class="doc-meta">PDF · 490 КБ · 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-section-title">Юридические документы</div>
+        <div class="doc-grid">
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">📄</div>
+            <div>
+              <div class="doc-tag doc">Договор</div>
+              <div class="doc-name">Типовой договор поставки</div>
+              <div class="doc-meta">DOCX · 45 КБ</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">📄</div>
+            <div>
+              <div class="doc-tag doc">Договор</div>
+              <div class="doc-name">Договор на техническое обслуживание</div>
+              <div class="doc-meta">DOCX · 38 КБ</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">📊</div>
+            <div>
+              <div class="doc-tag doc">Реквизиты</div>
+              <div class="doc-name">Банковские реквизиты ООО PromSnab</div>
+              <div class="doc-meta">PDF · 120 КБ</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-section-title">Прайс-листы и каталоги</div>
+        <div class="doc-grid">
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">💰</div>
+            <div>
+              <div class="doc-tag pdf">PDF</div>
+              <div class="doc-name">Прайс-лист насосное оборудование — июль 2026</div>
+              <div class="doc-meta">PDF · 1.8 МБ · Обновлён 01.07.2026</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">💰</div>
+            <div>
+              <div class="doc-tag pdf">PDF</div>
+              <div class="doc-name">Прайс-лист компрессорное оборудование</div>
+              <div class="doc-meta">PDF · 1.2 МБ · Обновлён 15.06.2026</div>
+            </div>
+          </div>
+          <div class="doc-card" onclick="toast('info','Загрузка документа...')">
+            <div class="doc-icon">📚</div>
+            <div>
+              <div class="doc-tag pdf">PDF</div>
+              <div class="doc-name">Общий каталог оборудования 2026</div>
+              <div class="doc-meta">PDF · 8.4 МБ · Версия 3.2</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:40px">
+          <p style="color:var(--text-2);margin-bottom:16px">Не нашли нужный документ?</p>
+          <button class="btn btn-primary" onclick="openCallback()">📞 Запросить документ</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/header.js"></script>
+  <script>injectShell({ page: 'documents.html', title: 'Документы' });</script>
+</body>
+</html>
